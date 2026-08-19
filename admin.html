@@ -1,0 +1,729 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <title>Admin Portal - RejoiceFuture</title>
+    <link rel="stylesheet" href="./css/global.css" />
+    <link rel="stylesheet" href="./css/admin.css" />
+    <link rel="stylesheet" href="./css/global2.css" />
+  </head>
+  <body class="admin-body">
+    <!-- Admin Login (shown when not authenticated) -->
+    <div id="adminLoginView" class="admin-login-view">
+      <div class="admin-login-card">
+        <div class="admin-login-header">
+          <div class="logo">
+            <span class="logo-icon">🏦</span>
+            <span class="logo-text">RejoiceFuture</span>
+            <span class="admin-badge">ADMIN</span>
+          </div>
+          <h2>Administration Portal</h2>
+        </div>
+
+        <form id="adminLoginForm">
+          <div class="form-group">
+            <label>Admin Email</label>
+            <input
+              type="email"
+              id="adminEmail"
+              required
+              value="admin@bank.com"
+            />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              id="adminPassword"
+              required
+              value="admin123"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">
+            Sign In
+          </button>
+        </form>
+
+        <div
+          id="adminLoginError"
+          class="alert alert-error"
+          style="display: none"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Admin Dashboard (shown when authenticated) -->
+    <div id="adminDashboardView" class="admin-layout" style="display: none">
+      <!-- Sidebar Overlay (for mobile) -->
+      <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
+
+      <!-- Admin Sidebar -->
+      <aside class="admin-sidebar" id="adminSidebar">
+        <!-- X Close Button (Mobile Only) -->
+        <button
+          class="admin-sidebar-close"
+          id="adminSidebarClose"
+          aria-label="Close menu"
+        >
+          &times;
+        </button>
+
+        <div class="sidebar-header">
+          <div class="logo">
+            <span class="logo-icon">🏦</span>
+            <span class="logo-text">Admin</span>
+          </div>
+        </div>
+
+        <nav class="admin-nav">
+          <div class="nav-group">
+            <span class="nav-group-title">Overview</span>
+            <a href="#" class="nav-item active" data-section="admin-dashboard"
+              >📊 Dashboard</a
+            >
+            <a href="#" class="nav-item" data-section="admin-reports"
+              >📈 Reports</a
+            >
+          </div>
+
+          <div class="nav-group">
+            <span class="nav-group-title">Users</span>
+            <a href="#" class="nav-item" data-section="admin-users">👥 Users</a>
+            <a href="#" class="nav-item" data-section="admin-accounts"
+              >💰 Accounts</a
+            >
+            <a href="#" class="nav-item" data-section="admin-limits"
+              >📏 Limits</a
+            >
+          </div>
+
+          <div class="nav-group">
+            <span class="nav-group-title">Operations</span>
+            <a href="#" class="nav-item" data-section="admin-transactions"
+              >💸 Transactions</a
+            >
+            <a href="#" class="nav-item" data-section="admin-support"
+              >💬 Support</a
+            >
+            <a href="#" class="nav-item" data-section="admin-balances"
+              >⚖️ Balance Adjust</a
+            >
+          </div>
+
+          <div class="nav-group">
+            <span class="nav-group-title">Security</span>
+            <a href="#" class="nav-item" data-section="admin-security"
+              >🔒 Security</a
+            >
+            <a href="#" class="nav-item" data-section="admin-otp"
+              >🔐 OTP Config</a
+            >
+            <a href="#" class="nav-item" data-section="admin-fraud">🛡️ Fraud</a>
+          </div>
+
+          <div class="nav-group">
+            <span class="nav-group-title">System</span>
+            <a href="#" class="nav-item" data-section="admin-audit"
+              >📋 Audit Logs</a
+            >
+            <a href="#" class="nav-item" data-section="admin-settings"
+              >⚙️ Settings</a
+            >
+            <a href="#" class="nav-item" data-section="admin-simulation"
+              >🧪 Simulation</a
+            >
+            <a href="#" class="nav-item" data-section="admin-impersonation"
+              >🎭 Test Mode</a
+            >
+          </div>
+        </nav>
+
+        <div class="admin-sidebar-footer">
+          <div class="admin-info">
+            <span id="adminName">Admin</span>
+            <span class="admin-role" id="adminRole">Super Admin</span>
+          </div>
+          <button class="btn btn-outline btn-block" id="adminLogoutBtn">
+            Logout
+          </button>
+        </div>
+      </aside>
+
+      <!-- Admin Main Content -->
+      <main class="admin-main">
+        <header class="admin-header">
+          <!-- Mobile Menu Toggle Button -->
+          <button
+            class="admin-menu-toggle"
+            id="adminMenuToggle"
+            aria-label="Open menu"
+          >
+            ☰
+          </button>
+
+          <h1 id="adminPageTitle">Dashboard</h1>
+          <div class="admin-header-actions">
+            <div class="admin-search">
+              <input
+                type="text"
+                id="globalSearch"
+                placeholder="Search users, transactions..."
+              />
+            </div>
+          </div>
+        </header>
+
+        <!-- Dashboard Section -->
+        <section class="admin-section active" id="admin-section-dashboard">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">👥</div>
+              <div class="stat-info">
+                <span class="stat-value" id="statTotalUsers">0</span>
+                <span class="stat-label">Total Users</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">✅</div>
+              <div class="stat-info">
+                <span class="stat-value" id="statActiveUsers">0</span>
+                <span class="stat-label">Active Users</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">💰</div>
+              <div class="stat-info">
+                <span class="stat-value" id="statTotalBalance">$0</span>
+                <span class="stat-label">Total Balances</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">💸</div>
+              <div class="stat-info">
+                <span class="stat-value" id="statTransactions">0</span>
+                <span class="stat-label">Transactions</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">⏳</div>
+              <div class="stat-info">
+                <span class="stat-value" id="statPending">0</span>
+                <span class="stat-label">Pending</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">🎫</div>
+              <div class="stat-info">
+                <span class="stat-value" id="statOpenTickets">0</span>
+                <span class="stat-label">Open Tickets</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-grid">
+            <div class="admin-card">
+              <h3>Recent Activity</h3>
+              <div id="recentActivity"></div>
+            </div>
+            <div class="admin-card">
+              <h3>System Health</h3>
+              <div class="health-indicators">
+                <div class="health-item healthy">
+                  <span>API Server</span>
+                  <span class="status-dot"></span>
+                </div>
+                <div class="health-item healthy">
+                  <span>Database</span>
+                  <span class="status-dot"></span>
+                </div>
+                <div class="health-item healthy">
+                  <span>OTP Service</span>
+                  <span class="status-dot"></span>
+                </div>
+                <div class="health-item healthy">
+                  <span>Notification Service</span>
+                  <span class="status-dot"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Users Section -->
+        <section class="admin-section" id="admin-section-users">
+          <div class="admin-toolbar">
+            <input
+              type="text"
+              id="userSearchInput"
+              placeholder="Search by name, email, phone, or account number..."
+            />
+            <button class="btn btn-primary" id="searchUsersBtn">Search</button>
+          </div>
+          <div class="admin-card">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Accounts</th>
+                    <th>Status</th>
+                    <th>Last Login</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Balance Adjustments Section -->
+        <section class="admin-section" id="admin-section-balances">
+          <div class="admin-card">
+            <h3>Adjust Simulated Balance</h3>
+            <form id="balanceAdjustForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Target User (Email or ID)</label>
+                  <input
+                    type="text"
+                    id="adjustUserSearch"
+                    placeholder="Search user..."
+                  />
+                  <div id="adjustUserResults" class="search-results"></div>
+                </div>
+                <div class="form-group">
+                  <label>Account</label>
+                  <select id="adjustAccountId"></select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Adjustment Type</label>
+                  <select id="adjustType">
+                    <option value="increase">Increase</option>
+                    <option value="decrease">Decrease</option>
+                    <option value="set">Set Exact Amount</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Amount</label>
+                  <input type="number" id="adjustAmount" step="0.01" required />
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Reason (Required)</label>
+                <textarea
+                  id="adjustReason"
+                  rows="3"
+                  required
+                  placeholder="Explain the reason for this adjustment..."
+                ></textarea>
+              </div>
+              <button type="submit" class="btn btn-warning">
+                ⚠️ Adjust Balance
+              </button>
+            </form>
+          </div>
+
+          <div class="admin-card" style="margin-top: 1rem">
+            <h3>Adjustment History</h3>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Reference</th>
+                    <th>User</th>
+                    <th>Amount</th>
+                    <th>Before → After</th>
+                    <th>Admin</th>
+                    <th>Reason</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody id="adjustmentHistoryBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Support Section -->
+        <section class="admin-section" id="admin-section-support">
+          <div class="admin-toolbar">
+            <select id="ticketStatusFilter">
+              <option value="">All Status</option>
+              <option value="open">Open</option>
+              <option value="waiting_for_admin">Waiting for Admin</option>
+              <option value="under_review">Under Review</option>
+              <option value="resolved">Resolved</option>
+              <option value="closed">Closed</option>
+            </select>
+            <button class="btn btn-primary" id="filterTicketsBtn">
+              Filter
+            </button>
+          </div>
+          <div class="admin-card">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Ticket #</th>
+                    <th>Subject</th>
+                    <th>User</th>
+                    <th>Category</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="supportTicketsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Audit Logs Section -->
+        <section class="admin-section" id="admin-section-audit">
+          <div class="admin-toolbar">
+            <select id="auditActionFilter">
+              <option value="">All Actions</option>
+              <option value="ADMIN_FROZE_ACCOUNT">Account Frozen</option>
+              <option value="ADMIN_ADJUSTED_SIMULATED_BALANCE">
+                Balance Adjusted
+              </option>
+              <option value="ADMIN_ENTERED_TEST_MODE">Test Mode</option>
+              <option value="ADMIN_CHANGED_TRANSFER_LIMIT">
+                Limits Changed
+              </option>
+              <option value="ADMIN_CHANGED_OTP_SETTING">
+                OTP Settings Changed
+              </option>
+            </select>
+            <button class="btn btn-primary" id="filterAuditBtn">Filter</button>
+            <button class="btn btn-outline" id="exportAuditBtn">
+              📥 Export CSV
+            </button>
+          </div>
+          <div class="admin-card">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Timestamp</th>
+                    <th>Actor</th>
+                    <th>Action</th>
+                    <th>Target</th>
+                    <th>Details</th>
+                    <th>IP</th>
+                  </tr>
+                </thead>
+                <tbody id="auditLogsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Simulation Center -->
+        <section class="admin-section" id="admin-section-simulation">
+          <div class="admin-card">
+            <h3>🧪 Simulation Control Center</h3>
+            <p class="text-muted">
+              Test various scenarios in the banking system
+            </p>
+
+            <div class="simulation-grid">
+              <div class="sim-category">
+                <h4>Transactions</h4>
+                <button
+                  class="btn btn-sim"
+                  data-scenario="successful_transaction"
+                >
+                  ✅ Successful Transaction
+                </button>
+                <button class="btn btn-sim" data-scenario="failed_transaction">
+                  ❌ Failed Transaction
+                </button>
+                <button class="btn btn-sim" data-scenario="pending_transaction">
+                  ⏳ Pending Transaction
+                </button>
+              </div>
+              <div class="sim-category">
+                <h4>Security</h4>
+                <button class="btn btn-sim" data-scenario="otp_required">
+                  🔐 OTP Required
+                </button>
+                <button class="btn btn-sim" data-scenario="fraud_detection">
+                  🛡️ Fraud Detection
+                </button>
+                <button class="btn btn-sim" data-scenario="account_freeze">
+                  🧊 Account Freeze
+                </button>
+              </div>
+              <div class="sim-category">
+                <h4>Other</h4>
+                <button
+                  class="btn btn-sim"
+                  data-scenario="exchange_rate_change"
+                >
+                  📊 Exchange Rate Change
+                </button>
+                <button class="btn btn-sim" data-scenario="card_decline">
+                  💳 Card Decline
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Limits Section -->
+        <section class="admin-section" id="admin-section-limits">
+          <div class="admin-card">
+            <h3>Manage User Transfer Limits</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Search User</label>
+                <input
+                  type="text"
+                  id="limitUserSearch"
+                  placeholder="Email or User ID"
+                />
+                <button class="btn btn-sm btn-outline" id="searchLimitsUser">
+                  Find User
+                </button>
+              </div>
+            </div>
+            <div id="limitsFormContainer" style="display: none">
+              <form id="limitsForm">
+                <h4 id="limitsUserName">User Limits</h4>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Single Transfer Max</label>
+                    <input type="number" id="limitSingleMax" step="100" />
+                  </div>
+                  <div class="form-group">
+                    <label>Daily Transfer Limit</label>
+                    <input type="number" id="limitDailyTransfer" step="1000" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Daily Transfer Count</label>
+                    <input type="number" id="limitDailyCount" />
+                  </div>
+                  <div class="form-group">
+                    <label>Monthly Transfer Limit</label>
+                    <input
+                      type="number"
+                      id="limitMonthlyTransfer"
+                      step="10000"
+                    />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Single Withdrawal Max</label>
+                    <input type="number" id="limitWithdrawalMax" step="100" />
+                  </div>
+                  <div class="form-group">
+                    <label>Daily Withdrawal Limit</label>
+                    <input
+                      type="number"
+                      id="limitDailyWithdrawal"
+                      step="1000"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Reason for Change</label>
+                  <textarea id="limitChangeReason" rows="2" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                  Update Limits
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- Test Mode / Impersonation -->
+        <section class="admin-section" id="admin-section-impersonation">
+          <div class="admin-card">
+            <h3>🎭 Enter Test Mode</h3>
+            <p class="text-muted">
+              View the application as a specific user for testing purposes. All
+              actions are audited.
+            </p>
+
+            <form id="impersonationForm">
+              <div class="form-group">
+                <label>Select User to Impersonate</label>
+                <input
+                  type="text"
+                  id="impersonateUserSearch"
+                  placeholder="Search by name or email..."
+                />
+                <div id="impersonateUserResults" class="search-results"></div>
+              </div>
+              <div class="form-group">
+                <label>Reason (Required for audit)</label>
+                <textarea
+                  id="impersonateReason"
+                  rows="2"
+                  required
+                  placeholder="Why are you entering test mode?"
+                ></textarea>
+              </div>
+              <button type="submit" class="btn btn-warning">
+                🎭 Enter Test Mode
+              </button>
+            </form>
+          </div>
+
+          <div class="admin-card" style="margin-top: 1rem">
+            <h3>Active Test Sessions</h3>
+            <div id="activeSessions"></div>
+          </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section class="admin-section" id="admin-section-settings">
+          <div class="admin-card">
+            <h3>System Settings</h3>
+            <div id="settingsContent"></div>
+          </div>
+        </section>
+
+        <!-- Other sections placeholders -->
+        <section class="admin-section" id="admin-section-transactions">
+          <div class="admin-card">
+            <h3>Transactions</h3>
+            <div id="transactionsAdminContent"></div>
+          </div>
+        </section>
+        <section class="admin-section" id="admin-section-accounts">
+          <div class="admin-card">
+            <h3>All Accounts</h3>
+            <div id="accountsAdminContent"></div>
+          </div>
+        </section>
+        <section class="admin-section" id="admin-section-security">
+          <div class="admin-card">
+            <h3>Security Events</h3>
+            <div id="securityContent"></div>
+          </div>
+        </section>
+        <section class="admin-section" id="admin-section-otp">
+          <div class="admin-card">
+            <h3>OTP Configuration</h3>
+            <div id="otpAdminContent"></div>
+          </div>
+        </section>
+        <section class="admin-section" id="admin-section-fraud">
+          <div class="admin-card">
+            <h3>Fraud Detection</h3>
+            <div id="fraudContent"></div>
+          </div>
+        </section>
+        <section class="admin-section" id="admin-section-reports">
+          <div class="admin-card">
+            <h3>Reports</h3>
+            <div id="reportsContent"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Admin Modal -->
+    <div class="modal-overlay" id="adminModalOverlay" style="display: none">
+      <div class="modal modal-lg" id="adminModalContent"></div>
+    </div>
+
+    <!-- Admin Toast -->
+    <div class="toast-container" id="adminToastContainer"></div>
+
+    <script src="./JAVASCRIPT/api.js"></script>
+    <script src="./JAVASCRIPT/admin/admin.js"></script>
+    <script src="./JAVASCRIPT/admin/users.js"></script>
+    <script src="./JAVASCRIPT/admin/balances.js"></script>
+    <script src="./JAVASCRIPT/admin/support.js"></script>
+    <script src="./JAVASCRIPT/admin/audit.js"></script>
+    <script src="./JAVASCRIPT/admin/limits.js"></script>
+    <script src="./JAVASCRIPT/admin/otp.js"></script>
+    <script src="./JAVASCRIPT/admin/reports.js"></script>
+    <script src="./JAVASCRIPT/admin/transactions.js"></script>
+    <script>
+      // Admin Sidebar Toggle
+      (function () {
+        const sidebar = document.getElementById("adminSidebar");
+        const overlay = document.getElementById("adminSidebarOverlay");
+        const closeBtn = document.getElementById("adminSidebarClose");
+        const menuToggle = document.getElementById("adminMenuToggle");
+
+        function openSidebar() {
+          sidebar.classList.add("open");
+          overlay.classList.add("active");
+          document.body.classList.add("admin-sidebar-open");
+        }
+
+        function closeSidebar() {
+          sidebar.classList.remove("open");
+          overlay.classList.remove("active");
+          document.body.classList.remove("admin-sidebar-open");
+        }
+
+        // Open sidebar on mobile menu toggle
+        if (menuToggle) {
+          menuToggle.addEventListener("click", (e) => {
+            e.stopPropagation();
+            openSidebar();
+          });
+        }
+
+        // Close sidebar on X button
+        if (closeBtn) {
+          closeBtn.addEventListener("click", closeSidebar);
+        }
+
+        // Close sidebar on overlay click
+        if (overlay) {
+          overlay.addEventListener("click", closeSidebar);
+        }
+
+        // Auto-close sidebar when nav item is clicked (mobile only)
+        document.querySelectorAll(".admin-nav .nav-item").forEach((item) => {
+          item.addEventListener("click", () => {
+            if (window.innerWidth <= 768) {
+              setTimeout(closeSidebar, 150);
+            }
+          });
+        });
+
+        // Close on Escape key
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && sidebar.classList.contains("open")) {
+            closeSidebar();
+          }
+        });
+
+        // Close sidebar on resize to desktop
+        window.addEventListener("resize", () => {
+          if (window.innerWidth > 768) {
+            closeSidebar();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

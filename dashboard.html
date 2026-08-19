@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <title>Dashboard - RejoiceFuture</title>
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/banking.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <!-- Sidebar Overlay (for mobile) -->
+      <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+      <!-- Sidebar -->
+      <aside class="sidebar" id="sidebar">
+        <!-- Close Button (Mobile Only) -->
+        <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">
+          &times;
+        </button>
+
+        <div class="sidebar-header">
+          <div class="logo">
+            <span class="logo-icon">🏦</span>
+            <span class="logo-text">GlobalBank</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <a href="#" class="nav-item active" data-section="dashboard">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+          <a href="#" class="nav-item" data-section="accounts">
+            <span class="nav-icon">💰</span>
+            <span>Accounts</span>
+          </a>
+          <a href="#" class="nav-item" data-section="transfers">
+            <span class="nav-icon">💸</span>
+            <span>Transfers</span>
+          </a>
+          <a href="#" class="nav-item" data-section="cards">
+            <span class="nav-icon">💳</span>
+            <span>Cards</span>
+          </a>
+          <a href="#" class="nav-item" data-section="savings">
+            <span class="nav-icon">🏦</span>
+            <span>Savings</span>
+          </a>
+          <a href="#" class="nav-item" data-section="investments">
+            <span class="nav-icon">📈</span>
+            <span>Investments</span>
+          </a>
+          <a href="#" class="nav-item" data-section="loans">
+            <span class="nav-icon">🏠</span>
+            <span>Loans</span>
+          </a>
+          <a href="#" class="nav-item" data-section="support">
+            <span class="nav-icon">💬</span>
+            <span>Support</span>
+          </a>
+          <a href="#" class="nav-item" data-section="profile">
+            <span class="nav-icon">👤</span>
+            <span>Profile</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <button class="btn btn-outline btn-block" id="logoutBtn">
+            🚪 Logout
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Top Bar -->
+        <header class="top-bar">
+          <button class="menu-toggle" id="menuToggle">☰</button>
+          <div class="top-bar-search">
+            <input type="text" placeholder="Search transactions, accounts..." />
+          </div>
+          <div class="top-bar-actions">
+            <button class="notification-btn" id="notificationBtn">
+              🔔 <span class="badge" id="notifBadge">0</span>
+            </button>
+            <div class="user-menu" id="userMenu">
+              <div class="user-avatar" id="userAvatar">U</div>
+              <span class="user-name" id="userName">User</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Impersonation Banner (hidden by default) -->
+        <div
+          class="impersonation-banner"
+          id="impersonationBanner"
+          style="display: none"
+        >
+          <span
+            >🔧 ADMIN TEST MODE - Acting as:
+            <strong id="impersonatingAs"></strong
+          ></span>
+          <button class="btn btn-danger btn-sm" id="exitTestMode">
+            Exit Test Mode
+          </button>
+        </div>
+
+        <!-- Dashboard Section -->
+        <section class="content-section active" id="section-dashboard">
+          <div class="section-header">
+            <h1>Dashboard</h1>
+            <p class="section-subtitle">
+              Welcome back, <span id="greetingName">User</span>
+            </p>
+          </div>
+
+          <!-- Balance Cards -->
+          <div class="balance-cards">
+            <div class="balance-card primary">
+              <div class="balance-label">Total Balance (USD)</div>
+              <div class="balance-amount" id="totalBalance">$0.00</div>
+              <div class="balance-change positive">+2.4% this month</div>
+            </div>
+            <div class="balance-card">
+              <div class="balance-label">Available</div>
+              <div class="balance-amount" id="availableBalance">$0.00</div>
+            </div>
+            <div class="balance-card">
+              <div class="balance-label">Savings</div>
+              <div class="balance-amount" id="savingsBalance">$0.00</div>
+            </div>
+            <div class="balance-card">
+              <div class="balance-label">Investments</div>
+              <div class="balance-amount" id="investmentBalance">$0.00</div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="quick-actions">
+            <button class="quick-action-btn" data-action="deposit">
+              <span class="qa-icon">⬇️</span>
+              <span>Deposit</span>
+            </button>
+            <button class="quick-action-btn" data-action="transfer">
+              <span class="qa-icon">💸</span>
+              <span>Transfer</span>
+            </button>
+            <button class="quick-action-btn" data-action="withdraw">
+              <span class="qa-icon">⬆️</span>
+              <span>Withdraw</span>
+            </button>
+            <button class="quick-action-btn" data-action="exchange">
+              <span class="qa-icon">🔄</span>
+              <span>Exchange</span>
+            </button>
+            <button class="quick-action-btn" data-action="pay-bills">
+              <span class="qa-icon">📄</span>
+              <span>Pay Bills</span>
+            </button>
+            <button class="quick-action-btn" data-action="cards">
+              <span class="qa-icon">💳</span>
+              <span>Cards</span>
+            </button>
+          </div>
+
+          <!-- Accounts Overview -->
+          <div class="dashboard-grid">
+            <div class="dashboard-card">
+              <div class="card-header">
+                <h3>My Accounts</h3>
+                <button class="btn btn-sm btn-outline" id="addAccountBtn">
+                  + Add Currency
+                </button>
+              </div>
+              <div class="accounts-list" id="accountsList">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+
+            <div class="dashboard-card">
+              <div class="card-header">
+                <h3>Recent Transactions</h3>
+                <a href="#" class="view-all">View All →</a>
+              </div>
+              <div class="transactions-list" id="recentTransactions">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Exchange Rates -->
+          <div class="dashboard-card">
+            <div class="card-header">
+              <h3>Exchange Rates</h3>
+              <span class="rate-base">Base: USD</span>
+            </div>
+            <div class="exchange-rates" id="exchangeRates">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Accounts Section -->
+        <section class="content-section" id="section-accounts">
+          <div class="section-header">
+            <h1>Accounts</h1>
+          </div>
+          <div id="accountsContent"></div>
+        </section>
+
+        <!-- Transfers Section -->
+        <section class="content-section" id="section-transfers">
+          <div class="section-header">
+            <h1>Transfers</h1>
+          </div>
+          <div class="transfer-container">
+            <div class="transfer-form-card">
+              <h3>Send Money</h3>
+              <form id="transferForm">
+                <div class="form-group">
+                  <label>From Account</label>
+                  <select id="transferFromAccount" required></select>
+                </div>
+
+                <div class="form-group">
+                  <label>Transfer Type</label>
+                  <select id="transferType">
+                    <option value="internal">Between My Accounts</option>
+                    <option value="beneficiary">To Beneficiary</option>
+                    <option value="external">External Transfer</option>
+                  </select>
+                </div>
+
+                <div
+                  id="beneficiarySelect"
+                  class="form-group"
+                  style="display: none"
+                >
+                  <label>Beneficiary</label>
+                  <select id="transferBeneficiary">
+                    <option value="">Select Beneficiary</option>
+                  </select>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline"
+                    id="addBeneficiaryBtn"
+                  >
+                    + Add New
+                  </button>
+                </div>
+
+                <div id="externalTransferFields" style="display: none">
+                  <div class="form-group">
+                    <label>Recipient Name</label>
+                    <input type="text" id="recipientName" />
+                  </div>
+                  <div class="form-group">
+                    <label>Account Number</label>
+                    <input type="text" id="recipientAccount" />
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>Bank</label>
+                      <input type="text" id="recipientBank" />
+                    </div>
+                    <div class="form-group">
+                      <label>Country</label>
+                      <select id="recipientCountry">
+                        <option value="US">United States</option>
+                        <option value="GB">United Kingdom</option>
+                        <option value="DE">Germany</option>
+                        <option value="FR">France</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Amount</label>
+                    <input
+                      type="number"
+                      id="transferAmount"
+                      step="0.01"
+                      min="0.01"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>Currency</label>
+                    <select id="transferCurrency">
+                      <option value="USD">USD</option>
+                      <option value="EUR">EUR</option>
+                      <option value="GBP">GBP</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Description (Optional)</label>
+                  <input
+                    type="text"
+                    id="transferDescription"
+                    placeholder="Payment for..."
+                  />
+                </div>
+
+                <div
+                  class="transfer-summary"
+                  id="transferSummary"
+                  style="display: none"
+                >
+                  <div class="summary-row">
+                    <span>Amount:</span>
+                    <span id="summaryAmount">$0.00</span>
+                  </div>
+                  <div class="summary-row">
+                    <span>Fee:</span>
+                    <span id="summaryFee">$0.00</span>
+                  </div>
+                  <div class="summary-row total">
+                    <span>Total:</span>
+                    <span id="summaryTotal">$0.00</span>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">
+                  Send Transfer
+                </button>
+              </form>
+            </div>
+
+            <div class="transfer-info">
+              <div class="info-card">
+                <h4>Transfer Limits</h4>
+                <div class="limit-item">
+                  <span>Daily Limit</span>
+                  <span id="dailyLimit">$100,000</span>
+                </div>
+                <div class="limit-item">
+                  <span>Used Today</span>
+                  <span id="dailyUsed">$0</span>
+                </div>
+                <div class="limit-item">
+                  <span>Remaining</span>
+                  <span id="dailyRemaining">$100,000</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transfer History -->
+          <div class="dashboard-card" style="margin-top: 2rem">
+            <div class="card-header">
+              <h3>Transfer History</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table" id="transferHistoryTable">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Reference</th>
+                    <th>Recipient</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="transferHistoryBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Cards Section -->
+        <section class="content-section" id="section-cards">
+          <div class="section-header">
+            <h1>Cards</h1>
+            <button class="btn btn-primary" id="createCardBtn">
+              + Create Card
+            </button>
+          </div>
+          <div class="cards-grid" id="cardsGrid">
+            <!-- Populated by JS -->
+          </div>
+        </section>
+
+        <!-- Savings Section -->
+        <section class="content-section" id="section-savings">
+          <div class="section-header">
+            <h1>Savings</h1>
+            <button class="btn btn-primary" id="createSavingsBtn">
+              + New Savings Goal
+            </button>
+          </div>
+          <div class="savings-grid" id="savingsGrid"></div>
+        </section>
+
+        <!-- Investments Section -->
+        <section class="content-section" id="section-investments">
+          <div class="section-header">
+            <h1>Investments</h1>
+          </div>
+          <div class="investment-dashboard">
+            <div class="portfolio-summary">
+              <div class="portfolio-value">
+                <span class="label">Portfolio Value</span>
+                <span class="value" id="portfolioValue">$0.00</span>
+              </div>
+              <div class="portfolio-change">
+                <span class="label">Total Gain/Loss</span>
+                <span class="value" id="portfolioGainLoss">$0.00</span>
+              </div>
+            </div>
+            <div class="investments-content" id="investmentsContent"></div>
+          </div>
+        </section>
+
+        <!-- Loans Section -->
+        <section class="content-section" id="section-loans">
+          <div class="section-header">
+            <h1>Loans</h1>
+            <button class="btn btn-primary" id="applyLoanBtn">
+              Apply for Loan
+            </button>
+          </div>
+          <div id="loansContent"></div>
+        </section>
+
+        <!-- Support Section -->
+        <section class="content-section" id="section-support">
+          <div class="section-header">
+            <h1>Support Center</h1>
+            <button class="btn btn-primary" id="createTicketBtn">
+              + New Ticket
+            </button>
+          </div>
+          <div id="supportContent"></div>
+        </section>
+
+        <!-- Profile Section -->
+        <section class="content-section" id="section-profile">
+          <div class="section-header">
+            <h1>Profile & Settings</h1>
+          </div>
+          <div id="profileContent"></div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="modalOverlay" style="display: none">
+      <div class="modal" id="modalContent"></div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Notification Panel -->
+    <div
+      class="notification-panel"
+      id="notificationPanel"
+      style="display: none"
+    >
+      <div class="panel-header">
+        <h3>Notifications</h3>
+        <button class="btn btn-sm" id="markAllRead">Mark All Read</button>
+      </div>
+      <div class="notification-list" id="notificationList"></div>
+    </div>
+
+    <!-- Scripts MUST be in this order -->
+    <script src="./JAVASCRIPT/api.js"></script>
+    <script src="./JAVASCRIPT/auth.js"></script>
+    <script src="./JAVASCRIPT/dashboard.js"></script>
+    <script src="./JAVASCRIPT/accounts.js"></script>
+    <script src="./JAVASCRIPT/transfers.js"></script>
+    <script src="./JAVASCRIPT/cards.js"></script>
+    <script src="./JAVASCRIPT/savings.js"></script>
+    <script src="./JAVASCRIPT/investments.js"></script>
+    <script src="./JAVASCRIPT/loans.js"></script>
+    <script src="./JAVASCRIPT/support.js"></script>
+    <script src="./JAVASCRIPT/notifications.js"></script>
+    <script src="./JAVASCRIPT/profile.js"></script>
+    <script src="./JAVASCRIPT/transactions.js"></script>
+  </body>
+</html>
