@@ -894,9 +894,9 @@ const Dashboard = {
                     <label>Description (Optional)</label>
                     <input type="text" id="depositDescription" placeholder="e.g., Salary, Gift, etc.">
                 </div>
-                <div class="alert alert-info">
+                <!--<div class="alert alert-info">
                     <strong>🔒 DEMO MODE:</strong> This is a simulated deposit. No real money is transferred.
-                </div>
+                </div>-->
                 <button type="submit" class="btn btn-primary btn-block">Deposit</button>
             </form>
         `);
