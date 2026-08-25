@@ -17,64 +17,98 @@
     <link rel="stylesheet" href="css/auth.css" />
     <style>
       /* ==========================================
-         LANDING PAGE - DARK ELEGANT DESIGN
+         LANDING PAGE - PROFESSIONAL BANKING DESIGN
          ========================================== */
 
       :root {
-        --bg-primary: #0f172a;
-        --bg-secondary: #1e293b;
-        --bg-tertiary: #334155;
-        --text-primary: #f1f5f9;
-        --text-secondary: #cbd5e1;
-        --text-muted: #94a3b8;
-        --border-color: #334155;
-        --accent: #64748b;
-        --accent-light: #94a3b8;
-        --gold: #b8860b;
-        --gold-light: #d4a017;
-        --success: #4ade80;
-        --hover-bg: #2d3748;
+        --bg-primary: #f0f4f8;
+        --bg-secondary: #ffffff;
+        --bg-tertiary: #e8edf4;
+        --bg-card: #ffffff;
+        --text-primary: #0a1628;
+        --text-secondary: #2d3748;
+        --text-muted: #64748b;
+        --border-color: #dce2ec;
+        --accent: #1a56db;
+        --accent-light: #3b82f6;
+        --accent-dark: #1e40af;
+        --gold: #d4a017;
+        --gold-light: #eab308;
+        --success: #059669;
+        --success-light: #10b981;
+        --hover-bg: #e8edf4;
+        --shadow: 0 4px 24px rgba(26, 86, 219, 0.12);
+        --shadow-hover: 0 8px 40px rgba(26, 86, 219, 0.18);
+        --gradient-primary: linear-gradient(135deg, #1a56db, #3b82f6);
+        --gradient-gold: linear-gradient(135deg, #d4a017, #eab308);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.7;
+        overflow-x: hidden;
       }
 
       .landing-page {
-        overflow-x: hidden;
-        background: var(--bg-primary);
-        color: var(--text-primary);
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-        line-height: 1.7;
+        min-height: 100vh;
       }
 
-      /* Top Navigation - Clean & Understated */
+      /* ========== NAVBAR ========== */
       .landing-navbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 1.25rem 2rem;
-        background: rgba(15, 23, 42, 0.95);
-        backdrop-filter: blur(8px);
-        border-bottom: 1px solid rgba(51, 65, 85, 0.8);
+        padding: 0.875rem 2rem;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border-color);
         position: fixed;
-        top: 0px;
+        top: 0;
         left: 0;
         right: 0;
         z-index: 1000;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      }
+
+      .landing-navbar.scrolled {
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
       }
 
       .landing-navbar .logo {
         display: flex;
         align-items: center;
         gap: 10px;
+        text-decoration: none;
       }
 
       .landing-navbar .logo-icon {
-        font-size: 22px;
+        font-size: 28px;
+        background: var(--gradient-primary);
+        border-radius: 12px;
+        padding: 6px 10px;
+        line-height: 1;
+        color: #fff;
       }
 
       .landing-navbar .logo-text {
         color: var(--text-primary);
-        font-size: 20px;
-        font-weight: 600;
-        letter-spacing: -0.3px;
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+      }
+
+      .landing-navbar .logo-text span {
+        color: var(--accent);
       }
 
       .landing-navbar .nav-links {
@@ -88,181 +122,412 @@
         font-size: 14px;
         font-weight: 500;
         text-decoration: none;
-        transition: color 0.2s;
-        padding: 6px 0;
-        border-bottom: 2px solid transparent;
+        transition: color 0.3s ease;
+        position: relative;
+      }
+
+      .landing-navbar .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--accent);
+        transition: width 0.3s ease;
+        border-radius: 2px;
       }
 
       .landing-navbar .nav-links a:hover {
-        color: var(--text-primary);
-        border-bottom-color: var(--accent);
+        color: var(--accent);
       }
 
-      .landing-navbar .btn-outline {
+      .landing-navbar .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      .landing-navbar .nav-links .btn-outline {
         background: transparent;
-        border: 1px solid var(--border-color);
-        color: var(--text-primary);
+        border: 1.5px solid var(--accent);
+        color: var(--accent);
         padding: 10px 24px;
         border-radius: 8px;
         font-size: 14px;
-        font-weight: 500;
-        transition: all 0.2s;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
       }
 
-      .landing-navbar .btn-outline:hover {
-        background: var(--bg-secondary);
-        border-color: var(--accent);
+      .landing-navbar .nav-links .btn-outline:hover {
+        background: var(--accent);
+        color: #fff;
+        transform: translateY(-1px);
+        box-shadow: var(--shadow);
       }
 
-      .landing-navbar .btn-primary {
-        background: var(--bg-secondary);
-        color: var(--text-primary);
-        padding: 10px 24px;
+      .landing-navbar .nav-links .btn-primary {
+        background: var(--gradient-primary);
+        color: #fff;
+        padding: 10px 28px;
         border-radius: 8px;
         font-size: 14px;
-        font-weight: 500;
+        font-weight: 600;
         border: none;
-        transition: all 0.2s;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 16px rgba(26, 86, 219, 0.3);
       }
 
-      .landing-navbar .btn-primary:hover {
+      .landing-navbar .nav-links .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px rgba(26, 86, 219, 0.4);
+      }
+
+      .mobile-menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--text-primary);
+        font-size: 28px;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 8px;
+        transition: background 0.3s ease;
+      }
+
+      .mobile-menu-toggle:hover {
         background: var(--bg-tertiary);
       }
 
-      /* Hero Section - Dark & Elegant */
+      /* ========== HERO SECTION ========== */
       .hero-section {
-        padding: 160px 2rem 80px;
+        padding: 130px 2rem 70px;
         text-align: center;
-        background: radial-gradient(ellipse at 50% 50%, rgba(51, 65, 85, 0.4) 0%, rgba(15, 23, 42, 1) 70%);
         position: relative;
+        overflow: hidden;
+        min-height: 85vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
+
+      /* Responsive background image handling */
+      .hero-section {
+        background-image: url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+      }
+
+      @media (max-width: 900px) {
+        .hero-section {
+          background-image: url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+          min-height: 70vh;
+          padding: 120px 1.5rem 50px;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .hero-section {
+          background-image: url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+          min-height: 65vh;
+          padding: 110px 1rem 40px;
+          background-attachment: scroll;
+        }
+      }
+
+      @media (max-width: 400px) {
+        .hero-section {
+          background-image: url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');
+          min-height: 60vh;
+          padding: 100px 0.75rem 30px;
+        }
+      }
+
+      @media (max-width: 250px) {
+        .hero-section {
+          background-image: url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');
+          min-height: 55vh;
+          padding: 90px 0.5rem 20px;
+        }
+      }
+
+      .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+       /* background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.88) 0%,
+          rgba(255, 255, 255, 0.75) 40%,
+          rgba(255, 255, 255, 0.92) 100%
+        );*/
+        z-index: 1;
+      }
+
+      .hero-section > * {
+        position: relative;
+        z-index: 2;
       }
 
       .hero-badge {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        background: rgba(51, 65, 85, 0.5);
-        border: 1px solid rgba(100, 116, 139, 0.3);
+        background: rgba(26, 86, 219, 0.1);
+        border: 1px solid rgba(26, 86, 219, 0.2);
         border-radius: 50px;
-        padding: 6px 16px;
+        padding: 8px 20px;
         font-size: 13px;
         font-weight: 500;
-        color: var(--text-secondary);
+        color: var(--accent);
         margin-bottom: 2rem;
+        backdrop-filter: blur(4px);
+        animation: fadeInDown 0.8s ease;
+      }
+
+      .hero-badge .badge-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--success);
+        display: inline-block;
+        animation: pulse-dot 2s infinite;
+      }
+
+      @keyframes pulse-dot {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(0.8); }
+      }
+
+      @keyframes fadeInDown {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
       }
 
       .hero-section h1 {
-        font-size: 3.25rem;
-        font-weight: 700;
-        line-height: 1.15;
-        margin-bottom: 1.25rem;
+        font-size: 3.8rem;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
         color: var(--text-primary);
-        letter-spacing: -1px;
-        max-width: 800px;
+        max-width: 900px;
         margin-left: auto;
         margin-right: auto;
+        animation: fadeInUp 0.8s ease 0.2s both;
+      }
+
+      .hero-section h1 .highlight {
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
       }
 
       .hero-section .hero-subtitle {
-        font-size: 1.15rem;
+        font-size: 1.3rem;
         color: var(--text-secondary);
-        max-width: 650px;
-        margin: 0 auto 3rem;
-        line-height: 1.7;
+        max-width: 700px;
+        margin: 0 auto 2.5rem;
+        line-height: 1.8;
+        animation: fadeInUp 0.8s ease 0.4s both;
       }
 
       .hero-actions {
         display: flex;
-        gap: 1rem;
+        gap: 1.2rem;
         justify-content: center;
-        margin-bottom: 3rem;
+        flex-wrap: wrap;
+        animation: fadeInUp 0.8s ease 0.6s both;
       }
 
       .hero-actions .btn-primary {
-        background: var(--bg-secondary);
-        color: var(--text-primary);
-        padding: 14px 32px;
-        border-radius: 10px;
-        font-size: 16px;
-        font-weight: 500;
+        background: var(--gradient-primary);
+        color: #fff;
+        padding: 16px 40px;
+        border-radius: 12px;
+        font-size: 17px;
+        font-weight: 600;
         border: none;
         text-decoration: none;
-        transition: all 0.2s;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 24px rgba(26, 86, 219, 0.35);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
       }
 
       .hero-actions .btn-primary:hover {
-        background: var(--bg-tertiary);
-        transform: translateY(-1px);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 40px rgba(26, 86, 219, 0.45);
       }
 
       .hero-actions .btn-outline {
-        background: transparent;
-        border: 1px solid var(--border-color);
+        background: rgba(255, 255, 255, 0.85);
+        border: 1.5px solid var(--border-color);
         color: var(--text-primary);
-        padding: 14px 32px;
-        border-radius: 10px;
-        font-size: 16px;
+        padding: 16px 40px;
+        border-radius: 12px;
+        font-size: 17px;
         font-weight: 500;
         text-decoration: none;
-        transition: all 0.2s;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(4px);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
       }
 
       .hero-actions .btn-outline:hover {
-        background: var(--bg-secondary);
+        background: #fff;
         border-color: var(--accent);
+        transform: translateY(-3px);
+        box-shadow: var(--shadow);
       }
 
-      /* Feature Cards - Dark & Subtle */
-      .features-section {
+      .hero-stats {
+        display: flex;
+        gap: 3rem;
+        margin-top: 3rem;
+        animation: fadeInUp 0.8s ease 0.8s both;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .hero-stat {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(4px);
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+      }
+
+      .hero-stat .number {
+        font-size: 1.8rem;
+        font-weight: 700;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        display: block;
+      }
+
+      .hero-stat .label {
+        font-size: 13px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 500;
+      }
+
+      /* ========== SECTION COMMON ========== */
+      .section-container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 4rem 2rem;
       }
 
-      .features-section .section-header {
+      .section-header {
         text-align: center;
         margin-bottom: 3rem;
       }
 
-      .features-section .section-header h2 {
-        font-size: 2.25rem;
+      .section-header .section-tag {
+        display: inline-block;
+        background: rgba(26, 86, 219, 0.08);
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 600;
+        padding: 4px 16px;
+        border-radius: 50px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 1rem;
+      }
+
+      .section-header h2 {
+        font-size: 2.5rem;
         font-weight: 700;
         color: var(--text-primary);
         margin-bottom: 1rem;
       }
 
-      .features-section .section-header p {
+      .section-header h2 .highlight {
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .section-header p {
         color: var(--text-secondary);
         font-size: 1.1rem;
-        max-width: 600px;
+        max-width: 650px;
         margin: 0 auto;
+      }
+
+      /* ========== FEATURES ========== */
+      .features-section {
+        background: var(--bg-secondary);
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
       }
 
       .features-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 1.5rem;
       }
 
       .feature-card {
-        background: var(--bg-secondary);
+        background: var(--bg-card);
         border: 1px solid var(--border-color);
-        border-radius: 12px;
+        border-radius: 16px;
         padding: 2rem;
-        transition: all 0.2s;
+        transition: all 0.3s ease;
         text-align: left;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      }
+
+      .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--gradient-primary);
+        opacity: 0;
+        transition: opacity 0.3s ease;
       }
 
       .feature-card:hover {
-        background: var(--bg-tertiary);
-        transform: translateY(-2px);
+        transform: translateY(-4px);
+        border-color: var(--accent-light);
+        box-shadow: var(--shadow-hover);
+      }
+
+      .feature-card:hover::before {
+        opacity: 1;
       }
 
       .feature-card .feature-icon {
-        font-size: 24px;
+        font-size: 32px;
         display: block;
         margin-bottom: 1rem;
-        color: var(--accent-light);
       }
 
       .feature-card h3 {
@@ -279,183 +544,361 @@
         margin: 0;
       }
 
-      /* Stats Section - Dark & Professional */
-      .stats-section {
-        background: var(--bg-secondary);
-        border-top: 1px solid var(--border-color);
+      /* ========== BANKING SERVICES ========== */
+      .services-section {
+        background: var(--bg-primary);
         border-bottom: 1px solid var(--border-color);
-        padding: 3rem 2rem;
       }
 
-      .stats-grid {
+      .services-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 2rem;
-        max-width: 1200px;
-        margin: 0 auto;
-        text-align: center;
       }
 
-      .stat-item {
-        padding: 1rem;
+      .service-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
       }
 
-      .stat-item .stat-number {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--text-primary);
+      .service-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-hover);
+        border-color: var(--accent-light);
+      }
+
+      .service-card .service-icon {
+        font-size: 36px;
         display: block;
-        margin-bottom: 0.5rem;
+        margin-bottom: 1rem;
       }
 
-      .stat-item .stat-label {
-        color: var(--text-muted);
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-
-      /* About Section - Dark & Storytelling */
-      .about-section {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 5rem 2rem;
-      }
-
-      .about-section h2 {
-        font-size: 2.25rem;
-        font-weight: 700;
-        text-align: center;
-        margin-bottom: 3rem;
+      .service-card h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
         color: var(--text-primary);
+        margin-bottom: 0.75rem;
       }
 
-      .about-content {
+      .service-card p {
+        color: var(--text-secondary);
+        font-size: 14px;
+        line-height: 1.8;
+        margin-bottom: 1rem;
+      }
+
+      .service-card .service-features {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .service-card .service-features li {
+        color: var(--text-secondary);
+        font-size: 14px;
+        padding: 4px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .service-card .service-features li::before {
+        content: '✓';
+        color: var(--success);
+        font-weight: 700;
+      }
+
+      /* ========== GOLD SECTION ========== */
+      .gold-section {
+        background: var(--bg-secondary);
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .gold-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 4rem;
         align-items: center;
       }
 
-      .about-text h3 {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: var(--text-primary);
-        margin-bottom: 1rem;
+      .gold-image {
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow);
       }
 
-      .about-text p {
+      .gold-image img {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+        display: block;
+      }
+
+      @media (max-width: 600px) {
+        .gold-image img {
+          height: 220px;
+        }
+      }
+
+      @media (max-width: 400px) {
+        .gold-image img {
+          height: 180px;
+        }
+      }
+
+      .gold-content h3 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 1.5rem;
+      }
+
+      .gold-content h3 .highlight {
+        color: var(--gold);
+      }
+
+      .gold-content p {
         color: var(--text-secondary);
-        line-height: 1.8;
+        line-height: 1.9;
         margin-bottom: 1.25rem;
       }
 
-      .about-visual {
-        background: var(--bg-secondary);
+      .gold-features {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      .gold-feature {
+        background: var(--bg-tertiary);
         border: 1px solid var(--border-color);
-        border-radius: 16px;
-        padding: 2.5rem;
+        border-radius: 12px;
+        padding: 1.25rem;
         text-align: center;
+        transition: all 0.3s ease;
       }
 
-      .about-visual .visual-icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
+      .gold-feature:hover {
+        border-color: var(--gold);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow);
       }
 
-      .about-visual h4 {
-        font-size: 1.125rem;
-        font-weight: 600;
-        color: var(--text-primary);
+      .gold-feature .icon {
+        font-size: 28px;
+        display: block;
         margin-bottom: 0.5rem;
       }
 
-      .about-visual p {
-        color: var(--text-secondary);
+      .gold-feature h5 {
+        color: var(--text-primary);
         font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
       }
 
-      /* Gold Section - Elegant but Subtle */
-      .gold-section {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 4rem 2rem;
-        text-align: center;
+      .gold-feature p {
+        color: var(--text-muted);
+        font-size: 12px;
+        margin: 0;
       }
 
-      .gold-section h2 {
-        font-size: 2rem;
+      /* ========== CRYPTO / BITCOIN SECTION ========== */
+      .crypto-section {
+        background: var(--bg-primary);
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .crypto-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+      }
+
+      .crypto-image {
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow);
+      }
+
+      .crypto-image img {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+        display: block;
+      }
+
+      @media (max-width: 600px) {
+        .crypto-image img {
+          height: 220px;
+        }
+      }
+
+      @media (max-width: 400px) {
+        .crypto-image img {
+          height: 180px;
+        }
+      }
+
+      .crypto-content h3 {
+        font-size: 1.75rem;
         font-weight: 700;
         color: var(--text-primary);
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
       }
 
-      .gold-section > p {
+      .crypto-content h3 .highlight {
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .crypto-content p {
         color: var(--text-secondary);
-        font-size: 1.1rem;
-        max-width: 650px;
-        margin: 0 auto 2.5rem;
-        line-height: 1.7;
+        line-height: 1.9;
+        margin-bottom: 1.25rem;
       }
 
-      .gold-content {
+      .crypto-features {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 3rem;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-top: 1.5rem;
       }
 
-      .gold-item {
+      .crypto-feature {
         background: var(--bg-secondary);
         border: 1px solid var(--border-color);
         border-radius: 12px;
-        padding: 2rem;
-        text-align: left;
-      }
-
-      .gold-item .gold-icon {
-        font-size: 28px;
-        margin-bottom: 1rem;
-      }
-
-      .gold-item h4 {
-        font-size: 1.125rem;
-        font-weight: 600;
-        color: var(--text-primary);
-        margin-bottom: 0.75rem;
-      }
-
-      .gold-item p {
-        color: var(--text-secondary);
-        font-size: 14px;
-        line-height: 1.6;
-      }
-
-      /* Reviews Section - Dark Testimonials */
-      .reviews-section {
-        background: var(--bg-secondary);
-        border-top: 1px solid var(--border-color);
-        border-bottom: 1px solid var(--border-color);
-        padding: 5rem 2rem;
-      }
-
-      .reviews-section .section-header {
+        padding: 1.25rem;
         text-align: center;
-        margin-bottom: 3rem;
+        transition: all 0.3s ease;
       }
 
-      .reviews-section h2 {
-        font-size: 2.25rem;
+      .crypto-feature:hover {
+        border-color: var(--accent);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow);
+      }
+
+      .crypto-feature .icon {
+        font-size: 28px;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      .crypto-feature h5 {
+        color: var(--text-primary);
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+      }
+
+      .crypto-feature p {
+        color: var(--text-muted);
+        font-size: 12px;
+        margin: 0;
+      }
+
+      /* ========== REAL ESTATE ========== */
+      .realestate-section {
+        background: var(--bg-secondary);
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .realestate-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+      }
+
+      .realestate-image {
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow);
+      }
+
+      .realestate-image img {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+        display: block;
+      }
+
+      @media (max-width: 600px) {
+        .realestate-image img {
+          height: 220px;
+        }
+      }
+
+      @media (max-width: 400px) {
+        .realestate-image img {
+          height: 180px;
+        }
+      }
+
+      .realestate-content h3 {
+        font-size: 1.75rem;
         font-weight: 700;
         color: var(--text-primary);
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
       }
 
-      .reviews-section .section-subtitle {
+      .realestate-content h3 .highlight {
+        color: var(--gold);
+      }
+
+      .realestate-content p {
         color: var(--text-secondary);
-        font-size: 1.1rem;
-        max-width: 600px;
-        margin: 0 auto;
+        line-height: 1.9;
+        margin-bottom: 1.25rem;
+      }
+
+      .realestate-stats {
+        display: flex;
+        gap: 2rem;
+        margin-top: 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .realestate-stat {
+        text-align: center;
+        background: var(--bg-tertiary);
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        flex: 1;
+        min-width: 100px;
+      }
+
+      .realestate-stat .number {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--gold);
+        display: block;
+      }
+
+      .realestate-stat .label {
+        color: var(--text-muted);
+        font-size: 13px;
+      }
+
+      /* ========== REVIEWS ========== */
+      .reviews-section {
+        background: var(--bg-primary);
+        border-bottom: 1px solid var(--border-color);
+        padding: 4rem 2rem;
       }
 
       .reviews-grid {
@@ -467,31 +910,31 @@
       }
 
       .review-card {
-        background: var(--bg-tertiary);
+        background: var(--bg-secondary);
         border: 1px solid var(--border-color);
-        border-radius: 12px;
+        border-radius: 16px;
         padding: 2rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        transition: all 0.2s;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
       }
 
       .review-card:hover {
-        background: #3d4a5d;
+        transform: translateY(-4px);
+        border-color: var(--accent-light);
+        box-shadow: var(--shadow-hover);
       }
 
-      .review-card .review-stars {
-        color: var(--gold-light);
-        margin-bottom: 1rem;
-        font-size: 14px;
+      .review-card .stars {
+        color: var(--gold);
+        font-size: 16px;
         letter-spacing: 2px;
+        margin-bottom: 1rem;
       }
 
       .review-card .review-text {
         color: var(--text-secondary);
         font-size: 15px;
-        line-height: 1.7;
+        line-height: 1.8;
         margin-bottom: 1.5rem;
         flex-grow: 1;
       }
@@ -500,7 +943,7 @@
         display: flex;
         align-items: center;
         gap: 12px;
-        border-top: 1px solid rgba(51, 65, 85, 0.8);
+        border-top: 1px solid var(--border-color);
         padding-top: 1.25rem;
       }
 
@@ -508,149 +951,145 @@
         width: 44px;
         height: 44px;
         border-radius: 50%;
-        background: var(--accent);
+        background: var(--gradient-primary);
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: 600;
         font-size: 16px;
-        color: var(--text-primary);
+        color: #fff;
         flex-shrink: 0;
-      }
-
-      .review-card .reviewer-info {
-        min-width: 0;
       }
 
       .review-card .reviewer-name {
         font-weight: 600;
         color: var(--text-primary);
         font-size: 14px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
       }
 
       .review-card .reviewer-role {
         font-size: 12px;
         color: var(--text-muted);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
       }
 
-      /* Trust Section */
-      .trust-section {
-        padding: 4rem 2rem;
-        text-align: center;
-      }
-
-      .trust-section h2 {
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: var(--text-primary);
-        margin-bottom: 2rem;
-      }
-
-      .trust-logos {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 2.5rem;
-        align-items: center;
-      }
-
-      .trust-logo {
-        font-size: 14px;
-        color: var(--text-muted);
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        background: var(--bg-secondary);
-        padding: 8px 16px;
-        border-radius: 8px;
-        border: 1px solid var(--border-color);
-      }
-
-      /* CTA Section */
+      /* ========== CTA ========== */
       .cta-section {
-        background: var(--bg-secondary);
-        border-top: 1px solid var(--border-color);
+        background: var(--gradient-primary);
         padding: 5rem 2rem;
         text-align: center;
+        border-bottom: 1px solid var(--border-color);
+        color: #fff;
       }
 
       .cta-section h2 {
-        font-size: 2.25rem;
+        font-size: 2.5rem;
         font-weight: 700;
         margin-bottom: 1.25rem;
-        color: var(--text-primary);
+      }
+
+      .cta-section h2 .highlight {
+        color: var(--gold-light);
       }
 
       .cta-section p {
-        color: var(--text-secondary);
+        color: rgba(255, 255, 255, 0.85);
         font-size: 1.1rem;
         max-width: 600px;
         margin: 0 auto 2.5rem;
-        line-height: 1.7;
+        line-height: 1.8;
       }
 
       .cta-buttons {
         display: flex;
-        gap: 1rem;
+        gap: 1.2rem;
         justify-content: center;
         flex-wrap: wrap;
       }
 
       .cta-buttons .btn-primary {
-        background: var(--bg-tertiary);
-        color: var(--text-primary);
-        padding: 14px 32px;
-        border-radius: 10px;
-        font-size: 16px;
-        font-weight: 500;
+        background: #fff;
+        color: var(--accent);
+        padding: 16px 40px;
+        border-radius: 12px;
+        font-size: 17px;
+        font-weight: 600;
         border: none;
         text-decoration: none;
-        transition: all 0.2s;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
       }
 
       .cta-buttons .btn-primary:hover {
-        background: var(--accent);
-        transform: translateY(-1px);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25);
       }
 
       .cta-buttons .btn-outline {
         background: transparent;
-        border: 1px solid var(--border-color);
-        color: var(--text-primary);
-        padding: 14px 32px;
-        border-radius: 10px;
-        font-size: 16px;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        color: #fff;
+        padding: 16px 40px;
+        border-radius: 12px;
+        font-size: 17px;
         font-weight: 500;
         text-decoration: none;
-        transition: all 0.2s;
+        transition: all 0.3s ease;
       }
 
       .cta-buttons .btn-outline:hover {
-        background: var(--bg-tertiary);
-        border-color: var(--accent);
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.7);
+        transform: translateY(-3px);
       }
 
-      /* Footer */
+      /* ========== FOOTER ========== */
       .landing-footer {
-        background: var(--bg-primary);
+        background: var(--bg-secondary);
+        padding: 4rem 2rem 2rem;
         border-top: 1px solid var(--border-color);
-        padding: 3rem 2rem 2rem;
       }
 
       .footer-content {
         max-width: 1200px;
         margin: 0 auto;
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 2rem;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 2.5rem;
         margin-bottom: 2.5rem;
+      }
+
+      .footer-brand .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 1rem;
+        text-decoration: none;
+      }
+
+      .footer-brand .logo-icon {
+        font-size: 24px;
+        background: var(--gradient-primary);
+        border-radius: 10px;
+        padding: 4px 8px;
+        color: #fff;
+        line-height: 1;
+      }
+
+      .footer-brand .logo-text {
+        color: var(--text-primary);
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .footer-brand .logo-text span {
+        color: var(--accent);
+      }
+
+      .footer-brand p {
+        color: var(--text-secondary);
+        font-size: 14px;
+        line-height: 1.8;
+        max-width: 300px;
       }
 
       .footer-column h4 {
@@ -665,14 +1104,14 @@
       .footer-column a {
         display: block;
         color: var(--text-secondary);
-        font-size: 13px;
+        font-size: 14px;
         margin-bottom: 10px;
         text-decoration: none;
-        transition: color 0.2s;
+        transition: color 0.3s ease;
       }
 
       .footer-column a:hover {
-        color: var(--text-primary);
+        color: var(--accent);
       }
 
       .footer-bottom {
@@ -681,13 +1120,57 @@
         text-align: center;
         font-size: 13px;
         color: var(--text-muted);
+        max-width: 1200px;
+        margin: 0 auto;
       }
 
       .footer-bottom a {
         color: var(--text-secondary);
+        text-decoration: none;
       }
 
-      /* Responsive */
+      .footer-bottom a:hover {
+        color: var(--accent);
+      }
+
+      /* ==========================================
+         RESPONSIVE
+         ========================================== */
+      @media (max-width: 1024px) {
+        .hero-section h1 {
+          font-size: 3rem;
+        }
+
+        .gold-grid,
+        .crypto-grid,
+        .realestate-grid {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+
+        .gold-grid .gold-image {
+          order: -1;
+        }
+
+        .crypto-grid .crypto-image {
+          order: -1;
+        }
+
+        .realestate-grid .realestate-image {
+          order: -1;
+        }
+
+        .gold-image img,
+        .crypto-image img,
+        .realestate-image img {
+          height: 280px;
+        }
+
+        .footer-content {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
       @media (max-width: 768px) {
         .landing-navbar {
           padding: 0.75rem 1rem;
@@ -695,10 +1178,29 @@
 
         .landing-navbar .nav-links {
           display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background: #fff;
+          flex-direction: column;
+          padding: 1.5rem;
+          gap: 1rem;
+          border-bottom: 1px solid var(--border-color);
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .landing-navbar .nav-links.open {
+          display: flex;
+        }
+
+        .mobile-menu-toggle {
+          display: block;
         }
 
         .hero-section {
-          padding: 120px 1rem 60px;
+          padding: 110px 1rem 40px;
+          min-height: 60vh;
         }
 
         .hero-section h1 {
@@ -709,21 +1211,58 @@
           font-size: 1rem;
         }
 
-        .features-section,
-        .about-section,
-        .reviews-section,
-        .cta-section {
+        .hero-stats {
+          flex-direction: row;
+          gap: 0.75rem;
+          flex-wrap: wrap;
+        }
+
+        .hero-stat {
+          padding: 0.5rem 1rem;
+          flex: 1;
+          min-width: 80px;
+        }
+
+        .hero-stat .number {
+          font-size: 1.25rem;
+        }
+
+        .section-container {
           padding: 3rem 1rem;
         }
 
-        .about-content {
-          grid-template-columns: 1fr;
-          gap: 2rem;
+        .section-header h2 {
+          font-size: 1.75rem;
         }
 
-        .stats-grid {
-          grid-template-columns: repeat(2, 1fr);
-          gap: 1rem;
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .services-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .gold-features {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .crypto-features {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .realestate-stats {
+          flex-direction: row;
+          gap: 0.75rem;
+        }
+
+        .realestate-stat {
+          padding: 0.75rem 1rem;
+        }
+
+        .footer-content {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
         }
 
         .cta-buttons {
@@ -732,9 +1271,24 @@
           gap: 0.75rem;
         }
 
-        .footer-content {
-          grid-template-columns: repeat(2, 1fr);
-          gap: 1.5rem;
+        .hero-actions {
+          flex-direction: column;
+          align-items: center;
+          gap: 0.75rem;
+          width: 100%;
+        }
+
+        .hero-actions .btn-primary,
+        .hero-actions .btn-outline {
+          width: 100%;
+          justify-content: center;
+          padding: 14px 24px;
+        }
+
+        .gold-image img,
+        .crypto-image img,
+        .realestate-image img {
+          height: 220px;
         }
       }
 
@@ -743,197 +1297,374 @@
           font-size: 1.75rem;
         }
 
-        .stats-grid {
-          grid-template-columns: 1fr;
+        .hero-stat .number {
+          font-size: 1.1rem;
         }
 
-        .features-grid,
+        .hero-stat .label {
+          font-size: 11px;
+        }
+
+        .section-header h2 {
+          font-size: 1.5rem;
+        }
+
         .reviews-grid {
           grid-template-columns: 1fr;
         }
 
-        .footer-content {
+        .gold-features {
           grid-template-columns: 1fr;
         }
 
-        .hero-actions {
+        .crypto-features {
+          grid-template-columns: 1fr;
+        }
+
+        .realestate-stats {
           flex-direction: column;
-          align-items: center;
-          gap: 0.75rem;
+          align-items: stretch;
+        }
+
+        .gold-image img,
+        .crypto-image img,
+        .realestate-image img {
+          height: 180px;
+        }
+
+        .cta-section h2 {
+          font-size: 1.75rem;
+        }
+      }
+
+      @media (max-width: 320px) {
+        .hero-section h1 {
+          font-size: 1.5rem;
+        }
+
+        .hero-section .hero-subtitle {
+          font-size: 0.9rem;
+        }
+
+        .hero-stat .number {
+          font-size: 1rem;
+        }
+
+        .hero-stat .label {
+          font-size: 10px;
+        }
+
+        .section-header h2 {
+          font-size: 1.3rem;
         }
       }
     </style>
   </head>
   <body>
     <div class="landing-page">
-      <!-- Navigation -->
-      <header class="landing-navbar">
-        <div class="logo">
+      <!-- ========== NAVIGATION ========== -->
+      <header class="landing-navbar" id="navbar">
+        <a href="index.html" class="logo">
           <span class="logo-icon">🏦</span>
-          <span class="logo-text">RejoiceFuture</span>
-        </div>
-        <nav class="nav-links">
+          <span class="logo-text">Rejoice<span>Future</span></span>
+        </a>
+
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+          ☰
+        </button>
+
+        <nav class="nav-links" id="navLinks">
           <a href="#features">Features</a>
-          <a href="#about">Why Us</a>
-          <a href="#reviews">Reviews</a>
+          <a href="#services">Services</a>
           <a href="#gold">Gold</a>
+          <a href="#crypto">Crypto</a>
+          <a href="#reviews">Reviews</a>
           <a href="login.html" class="btn-outline">Sign In</a>
-          <a href="register.html" class="btn-primary">Get Started</a>
+          <a href="register.html" class="btn-primary">Open Account</a>
         </nav>
       </header>
 
-      <!-- Hero Section -->
-      <section class="hero-section">
-        <div class="hero-badge">✨ Banking Made Simple</div>
-        <h1>Bank With Confidence,<br />Wherever You Are</h1>
+      <!-- ========== HERO SECTION ========== -->
+      <section class="hero-section" id="home">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Trusted by 10M+ Customers Worldwide
+        </div>
+        <h1>
+          Bank With Confidence,<br />
+          <span class="highlight">Wherever You Are</span>
+        </h1>
         <p class="hero-subtitle">
-          International banking, gold-backed savings, and smart investments —
-          all designed for your everyday life.
+          Global banking, multi-currency accounts, gold savings, and secure crypto services — 
+          all designed for your everyday financial needs.
         </p>
         <div class="hero-actions">
-          <a href="register.html" class="btn-primary">Open Your Account</a>
-          <a href="login.html" class="btn-outline">Sign In</a>
+          <a href="register.html" class="btn-primary">🚀 Open Your Account</a>
+          <a href="login.html" class="btn-outline">🔑 Sign In</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="number">10M+</span>
+            <span class="label">Customers</span>
+          </div>
+          <div class="hero-stat">
+            <span class="number">150+</span>
+            <span class="label">Countries</span>
+          </div>
+          <div class="hero-stat">
+            <span class="number">$50B+</span>
+            <span class="label">Transferred</span>
+          </div>
+          <div class="hero-stat">
+            <span class="number">4.9★</span>
+            <span class="label">Avg Rating</span>
+          </div>
         </div>
       </section>
 
-      <!-- Features Section -->
+      <!-- ========== FEATURES ========== -->
       <section class="features-section" id="features">
-        <div class="section-header">
-          <h2>Everything You Need to Bank</h2>
-          <p>Simple tools, powerful features, and the security you expect.</p>
-        </div>
-        <div class="features-grid">
-          <div class="feature-card">
-            <span class="feature-icon">🌍</span>
-            <h3>Multi-Currency Accounts</h3>
-            <p>Hold and manage 10+ major currencies in one place. Convert instantly at competitive rates.</p>
+        <div class="section-container">
+          <div class="section-header">
+            <span class="section-tag">Why Choose RejoiceFuture</span>
+            <h2>Everything You Need to <span class="highlight">Bank</span></h2>
+            <p>Simple tools, powerful features, and the security you expect from a modern bank.</p>
           </div>
-          <div class="feature-card">
-            <span class="feature-icon">⚡</span>
-            <h3>Fast Transfers</h3>
-            <p>Send money locally or internationally with real-time tracking and transparent fees.</p>
-          </div>
-          <div class="feature-card">
-            <span class="feature-icon">🔒</span>
-            <h3>Bank-Grade Security</h3>
-            <p>Your money is protected with multi-factor authentication and continuous fraud monitoring.</p>
-          </div>
-          <div class="feature-card">
-            <span class="feature-icon">📈</span>
-            <h3>Smart Investing</h3>
-            <p>Build your portfolio with stocks, bonds, and ETFs — with guidance from our tools.</p>
-          </div>
-          <div class="feature-card">
-            <span class="feature-icon">💳</span>
-            <h3>Everyday Cards</h3>
-            <p>Virtual and physical cards with rewards, spending controls, and global acceptance.</p>
-          </div>
-          <div class="feature-card">
-            <span class="feature-icon">💬</span>
-            <h3>24/7 Support</h3>
-            <p>Real humans ready to help whenever you need. Average response time under 2 minutes.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Stats Section -->
-      <section class="stats-section">
-        <div class="stats-grid">
-          <div class="stat-item">
-            <span class="stat-number">10M+</span>
-            <span class="stat-label">Customers</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-number">150+</span>
-            <span class="stat-label">Countries</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-number">$50B+</span>
-            <span class="stat-label">Transferred</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-number">4.9★</span>
-            <span class="stat-label">Avg Rating</span>
+          <div class="features-grid">
+            <div class="feature-card">
+              <span class="feature-icon">🌍</span>
+              <h3>Multi-Currency Accounts</h3>
+              <p>Hold and manage 10+ major currencies in one place. Convert instantly at competitive rates with real-time tracking.</p>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">⚡</span>
+              <h3>Fast Transfers</h3>
+              <p>Send money locally or internationally with instant processing and transparent fees. Track every transaction in real-time.</p>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">🔒</span>
+              <h3>Bank-Grade Security</h3>
+              <p>Your money is protected with 256-bit encryption, multi-factor authentication, and continuous fraud monitoring 24/7.</p>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">📈</span>
+              <h3>Smart Savings</h3>
+              <p>Build your wealth with high-yield savings accounts, goal-based saving tools, and automated investment options.</p>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">💳</span>
+              <h3>Everyday Cards</h3>
+              <p>Virtual and physical cards with rewards, spending controls, and global acceptance. Freeze/unfreeze instantly from the app.</p>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">💬</span>
+              <h3>24/7 Support</h3>
+              <p>Real humans ready to help whenever you need. Average response time under 2 minutes via chat, email, or phone.</p>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- About Section -->
-      <section class="about-section" id="about">
-        <h2>Why People Choose RejoiceFuture</h2>
-        <div class="about-content">
-          <div class="about-text">
-            <h3>Banking That Fits Your Life</h3>
-            <p>
-              RejoiceFuture was built on a simple idea: banking should work for you,
-              not the other way around. We combine the stability of traditional banking
-              with the speed and accessibility of modern technology.
-            </p>
-            <p>
-              Whether you're a freelancer earning in multiple currencies, a business owner
-              managing international payments, or someone saving for the future — we have
-              the tools to help you succeed.
-            </p>
-            <p>
-              No hidden fees. No confusing terms. Just honest banking that puts you first.
-            </p>
+      <!-- ========== BANKING SERVICES ========== -->
+      <section class="services-section" id="services">
+        <div class="section-container">
+          <div class="section-header">
+            <span class="section-tag">Our Services</span>
+            <h2>Complete <span class="highlight">Banking</span> Solutions</h2>
+            <p>From everyday banking to wealth management — we've got you covered.</p>
           </div>
-          <div class="about-visual">
-            <div class="visual-icon">🏆</div>
-            <h4>Trusted Worldwide</h4>
-            <p>
-              Recognized as one of the leading digital banks for customer satisfaction
-              and reliability.
-            </p>
+          <div class="services-grid">
+            <div class="service-card">
+              <span class="service-icon">🏦</span>
+              <h3>Personal Banking</h3>
+              <p>Everyday banking made simple with checking accounts, savings accounts, and debit cards — all in one place.</p>
+              <ul class="service-features">
+                <li>Free checking accounts</li>
+                <li>High-yield savings</li>
+                <li>No hidden fees</li>
+              </ul>
+            </div>
+            <div class="service-card">
+              <span class="service-icon">💎</span>
+              <h3>Gold Savings</h3>
+              <p>Save and invest in physical gold with ease. Gold has been a trusted store of value for centuries — now available digitally.</p>
+              <ul class="service-features">
+                <li>Backed by physical bullion</li>
+                <li>Live gold pricing</li>
+                <li>Insured storage</li>
+              </ul>
+            </div>
+            <div class="service-card">
+              <span class="service-icon">₿</span>
+              <h3>Bitcoin & Crypto Banking</h3>
+              <p>Buy, sell, and hold Bitcoin and other cryptocurrencies directly from your bank account. Secure and regulated.</p>
+              <ul class="service-features">
+                <li>Bitcoin savings accounts</li>
+                <li>Multi-currency crypto wallets</li>
+                <li>Secure cold storage</li>
+              </ul>
+            </div>
+            <div class="service-card">
+              <span class="service-icon">🏠</span>
+              <h3>Real Estate Banking</h3>
+              <p>Access real estate investment opportunities through our banking platform. Residential, commercial, and industrial.</p>
+              <ul class="service-features">
+                <li>Property investment options</li>
+                <li>Competitive returns</li>
+                <li>Diversified portfolio</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- Gold Section -->
+      <!-- ========== GOLD SECTION ========== -->
       <section class="gold-section" id="gold">
-        <h2>Invest in Gold, Securely</h2>
-        <p>
-          Gold has been a trusted store of value for centuries. Now you can own it
-          digitally with just a few taps.
-        </p>
-        <div class="gold-content">
-          <div class="gold-item">
-            <div class="gold-icon">🥇</div>
-            <h4>Gold-Backed Accounts</h4>
-            <p>Your digital gold is backed by physical bullion stored in secure vaults.</p>
+        <div class="section-container">
+          <div class="section-header">
+            <span class="section-tag">Precious Metals</span>
+            <h2>Gold Savings — <span class="highlight">Secure</span> &amp; Simple</h2>
           </div>
-          <div class="gold-item">
-            <div class="gold-icon">📊</div>
-            <h4>Live Gold Prices</h4>
-            <p>Track gold prices in real-time and buy when the time is right for you.</p>
-          </div>
-          <div class="gold-item">
-            <div class="gold-icon">🔄</div>
-            <h4>Easy Conversions</h4>
-            <p>Convert between gold, cash, and other currencies whenever you need.</p>
+          <div class="gold-grid">
+            <div class="gold-image">
+              <img 
+                src="https://images.unsplash.com/photo-1519098901909-b1553a1190af?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                alt="Gold Savings"
+                onerror="this.src='https://via.placeholder.com/800x350/e8edf4/d4a017?text=Gold+Savings'"
+              />
+            </div>
+            <div class="gold-content">
+              <h3>A <span class="highlight">Trusted</span> Store of Value</h3>
+              <p>Gold has been one of the most valuable precious metals throughout human history, used as a symbol of wealth for centuries due to its rarity and its ability to hold its worth for a long time.</p>
+              <p>At RejoiceFuture, we make gold savings accessible to everyone. Open a gold savings account and start building your wealth with physical gold — backed by bullion stored in secure vaults.</p>
+              <div class="gold-features">
+                <div class="gold-feature">
+                  <span class="icon">🥇</span>
+                  <h5>Physical Bullion</h5>
+                  <p>Backed by real gold</p>
+                </div>
+                <div class="gold-feature">
+                  <span class="icon">📊</span>
+                  <h5>Live Pricing</h5>
+                  <p>Real-time rates</p>
+                </div>
+                <div class="gold-feature">
+                  <span class="icon">🔄</span>
+                  <h5>Easy Conversion</h5>
+                  <p>Gold to cash instantly</p>
+                </div>
+                <div class="gold-feature">
+                  <span class="icon">🏛️</span>
+                  <h5>Insured Storage</h5>
+                  <p>24/7 secure vaults</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- Reviews Section -->
+      <!-- ========== CRYPTO / BITCOIN SECTION ========== -->
+      <section class="crypto-section" id="crypto">
+        <div class="section-container">
+          <div class="section-header">
+            <span class="section-tag">Digital Currency</span>
+            <h2>Bitcoin &amp; <span class="highlight">Crypto Banking</span></h2>
+          </div>
+          <div class="crypto-grid">
+            <div class="crypto-content">
+              <h3>Bank with <span class="highlight">Bitcoin</span></h3>
+              <p>For the first time in history, value can be sent anywhere in the world at the same speed as information — in a secure and trust-minimized way. Digital currencies are powered by millions of peers within a globally distributed network.</p>
+              <p>At RejoiceFuture, we believe everyone should have access to the digital economy. Our secure banking platform allows you to buy, sell, and hold Bitcoin and other cryptocurrencies alongside your traditional savings.</p>
+              <p>Save in Bitcoin, earn interest on your crypto holdings, and make instant payments — all from your RejoiceFuture account.</p>
+              <div class="crypto-features">
+                <div class="crypto-feature">
+                  <span class="icon">₿</span>
+                  <h5>Bitcoin Savings</h5>
+                  <p>Earn interest on BTC</p>
+                </div>
+                <div class="crypto-feature">
+                  <span class="icon">🛡️</span>
+                  <h5>Secure Storage</h5>
+                  <p>Cold wallet protection</p>
+                </div>
+                <div class="crypto-feature">
+                  <span class="icon">⚡</span>
+                  <h5>Instant Transfers</h5>
+                  <p>Send crypto in seconds</p>
+                </div>
+                <div class="crypto-feature">
+                  <span class="icon">🌐</span>
+                  <h5>Global Access</h5>
+                  <p>Bank anywhere, anytime</p>
+                </div>
+              </div>
+            </div>
+            <div class="crypto-image">
+              <img 
+                src="https://images.unsplash.com/photo-1621504450181-5d356f61d307?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                alt="Bitcoin Banking"
+                onerror="this.src='https://via.placeholder.com/800x350/e8edf4/1a56db?text=Bitcoin+Banking'"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== REAL ESTATE ========== -->
+      <section class="realestate-section" id="realestate">
+        <div class="section-container">
+          <div class="section-header">
+            <span class="section-tag">Alternative Banking</span>
+            <h2>Real Estate <span class="highlight">Investment</span></h2>
+          </div>
+          <div class="realestate-grid">
+            <div class="realestate-content">
+              <h3>Build Wealth Through <span class="highlight">Property</span></h3>
+              <p>Real estate investment involves the purchase, ownership, management, rental, and/or sale of real estate for profit. It is an asset form with limited liquidity relative to other investments.</p>
+              <p>RejoiceFuture offers access to real estate investment opportunities for our banking clients. Diversify your portfolio with residential, commercial, and industrial properties — all managed by our expert team.</p>
+              <div class="realestate-stats">
+                <div class="realestate-stat">
+                  <span class="number">45-80%</span>
+                  <span class="label">ROI Potential</span>
+                </div>
+                <div class="realestate-stat">
+                  <span class="number">50+</span>
+                  <span class="label">Properties</span>
+                </div>
+                <div class="realestate-stat">
+                  <span class="number">15+</span>
+                  <span class="label">Countries</span>
+                </div>
+              </div>
+            </div>
+            <div class="realestate-image">
+              <img 
+                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                alt="Real Estate Banking"
+                onerror="this.src='https://via.placeholder.com/800x350/e8edf4/d4a017?text=Real+Estate'"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== REVIEWS ========== -->
       <section class="reviews-section" id="reviews">
         <div class="section-header">
-          <h2>What Our Customers Say</h2>
-          <p class="section-subtitle">Real stories from real people</p>
+          <span class="section-tag">Testimonials</span>
+          <h2>What Our Customers <span class="highlight">Say</span></h2>
+          <p>Real stories from real people who trust RejoiceFuture with their financial future.</p>
         </div>
         <div class="reviews-grid">
           <div class="review-card">
-            <div>
-              <div class="review-stars">★★★★★</div>
-              <p class="review-text">
-                "The multi-currency accounts changed how I do business. I'm a freelancer
-                and get paid in dollars, euros, and pounds — all in one place. It's
-                incredibly convenient."
-              </p>
-            </div>
+            <div class="stars">★★★★★</div>
+            <p class="review-text">
+              "The multi-currency accounts changed how I do business. I'm a freelancer and get paid in dollars, euros, and pounds — all in one place. It's incredibly convenient."
+            </p>
             <div class="reviewer">
               <div class="reviewer-avatar">AS</div>
-              <div class="reviewer-info">
+              <div>
                 <div class="reviewer-name">Alex Sousa</div>
                 <div class="reviewer-role">Freelance Designer</div>
               </div>
@@ -941,16 +1672,13 @@
           </div>
 
           <div class="review-card">
-            <div>
-              <div class="review-stars">★★★★★</div>
-              <p class="review-text">
-                "I've been with RejoiceFuture for a year and they've never let me down.
-                The support team is responsive and actually listens to what I need."
-              </p>
-            </div>
+            <div class="stars">★★★★★</div>
+            <p class="review-text">
+              "I've been with RejoiceFuture for two years and they've never let me down. The support team is responsive, the app is intuitive, and the security features give me peace of mind."
+            </p>
             <div class="reviewer">
               <div class="reviewer-avatar">MK</div>
-              <div class="reviewer-info">
+              <div>
                 <div class="reviewer-name">Megan Kim</div>
                 <div class="reviewer-role">Small Business Owner</div>
               </div>
@@ -958,16 +1686,13 @@
           </div>
 
           <div class="review-card">
-            <div>
-              <div class="review-stars">★★★★★</div>
-              <p class="review-text">
-                "Started with gold investing to diversify my savings. The process was
-                simple to understand and the app made it easy to track my investments."
-              </p>
-            </div>
+            <div class="stars">★★★★★</div>
+            <p class="review-text">
+              "Started with gold savings to diversify my portfolio. The process was simple to understand and the app made it easy to track my gold holdings. Highly recommended."
+            </p>
             <div class="reviewer">
               <div class="reviewer-avatar">RP</div>
-              <div class="reviewer-info">
+              <div>
                 <div class="reviewer-name">Rahul Patel</div>
                 <div class="reviewer-role">Software Engineer</div>
               </div>
@@ -975,107 +1700,58 @@
           </div>
 
           <div class="review-card">
-            <div>
-              <div class="review-stars">★★★★★</div>
-              <p class="review-text">
-                "Transferring money to family abroad used to be stressful. Now it takes
-                minutes and the fees are fair. Couldn't ask for more."
-              </p>
-            </div>
+            <div class="stars">★★★★★</div>
+            <p class="review-text">
+              "Transferring money to family abroad used to be stressful and expensive. Now it takes minutes, the fees are fair, and I can track everything in real-time."
+            </p>
             <div class="reviewer">
               <div class="reviewer-avatar">LC</div>
-              <div class="reviewer-info">
+              <div>
                 <div class="reviewer-name">Lena Cruz</div>
-                <div class="reviewer-role">Nurse</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="review-card">
-            <div>
-              <div class="review-stars">★★★★★</div>
-              <p class="review-text">
-                "The interface is clean and straightforward. No confusing jargon,
-                no hidden fees. It's banking the way it should be in 2026."
-              </p>
-            </div>
-            <div class="reviewer">
-              <div class="reviewer-avatar">TW</div>
-              <div class="reviewer-info">
-                <div class="reviewer-name">Tom Watkins</div>
-                <div class="reviewer-role">Retired Teacher</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="review-card">
-            <div>
-              <div class="review-stars">★★★★★</div>
-              <p class="review-text">
-                "As someone who values security, I appreciate the multi-factor
-                authentication and the fact that I can freeze my card instantly
-                from the app."
-              </p>
-            </div>
-            <div class="reviewer">
-              <div class="reviewer-avatar">IH</div>
-              <div class="reviewer-info">
-                <div class="reviewer-name">Ines Hassan</div>
-                <div class="reviewer-role">Financial Analyst</div>
+                <div class="reviewer-role">Healthcare Professional</div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Trust Section -->
-      <section class="trust-section">
-        <h2>Committed to Your Security</h2>
-        <div class="trust-logos">
-          <div class="trust-logo">🛡️ GDPR Compliant</div>
-          <div class="trust-logo">🔒 256-bit Encryption</div>
-          <div class="trust-logo">🏛️ Regulated</div>
-          <div class="trust-logo">🌐 24/7 Monitoring</div>
-        </div>
-      </section>
-
-      <!-- Final CTA -->
+      <!-- ========== CTA ========== -->
       <section class="cta-section">
-        <h2>Ready to Get Started?</h2>
+        <h2>Ready to Start <span class="highlight">Banking</span>?</h2>
         <p>
           Join millions of people who trust RejoiceFuture with their money.
-          Open your account in minutes and start building your financial future.
+          Open your account in minutes and start building your financial future today.
         </p>
         <div class="cta-buttons">
-          <a href="register.html" class="btn-primary">Create Account</a>
-          <a href="login.html" class="btn-outline">Sign In</a>
+          <a href="register.html" class="btn-primary">🚀 Open Account</a>
+          <a href="login.html" class="btn-outline">🔑 Sign In</a>
         </div>
       </section>
 
-      <!-- Footer -->
+      <!-- ========== FOOTER ========== -->
       <footer class="landing-footer">
         <div class="footer-content">
-          <div class="footer-column">
-            <h4>RejoiceFuture</h4>
-            <div class="logo" style="margin-bottom: 1rem;">
+          <div class="footer-brand">
+            <a href="index.html" class="logo">
               <span class="logo-icon">🏦</span>
-              <span class="logo-text">RejoiceFuture</span>
-            </div>
-            <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.6;">
+              <span class="logo-text">Rejoice<span>Future</span></span>
+            </a>
+            <p>
               Modern banking for everyone. Simple, secure, and honest.
+              Building your financial future with confidence.
             </p>
           </div>
           <div class="footer-column">
-            <h4>Products</h4>
-            <a href="#">Accounts</a>
-            <a href="#">Gold Savings</a>
-            <a href="#">Transfers</a>
-            <a href="#">Cards</a>
-            <a href="#">Investments</a>
+            <h4>Banking</h4>
+            <a href="#services">Accounts</a>
+            <a href="#gold">Gold Savings</a>
+            <a href="#crypto">Crypto Banking</a>
+            <a href="#realestate">Real Estate</a>
+            <a href="#features">Cards</a>
           </div>
           <div class="footer-column">
             <h4>Company</h4>
-            <a href="#">About</a>
+            <a href="#">About Us</a>
             <a href="#">Careers</a>
             <a href="#">Press</a>
             <a href="#">Blog</a>
@@ -1089,10 +1765,62 @@
           </div>
         </div>
         <div class="footer-bottom">
-          <p>&copy; 2026 RejoiceFuture.</p>
-          <p><a href="admin.html">consol </a></p>
+          <p>&copy; 2026 RejoiceFuture. All rights reserved.</p>
+          <p><a href="admin.html">Admin Portal</a></p>
         </div>
       </footer>
     </div>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script>
+      // Mobile Menu Toggle
+      const mobileToggle = document.getElementById('mobileMenuToggle');
+      const navLinks = document.getElementById('navLinks');
+
+      if (mobileToggle && navLinks) {
+        mobileToggle.addEventListener('click', () => {
+          navLinks.classList.toggle('open');
+        });
+
+        navLinks.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', () => {
+            navLinks.classList.remove('open');
+          });
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!e.target.closest('.landing-navbar')) {
+            navLinks.classList.remove('open');
+          }
+        });
+      }
+
+      // Navbar scroll effect
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+          navbar.classList.add('scrolled');
+        } else {
+          navbar.classList.remove('scrolled');
+        }
+      });
+
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          const href = this.getAttribute('href');
+          if (href === '#') return;
+          
+          const target = document.querySelector(href);
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+    </script>
   </body>
 </html>
