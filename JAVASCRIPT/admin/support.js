@@ -46,7 +46,11 @@ const AdminSupport = {
             <tr>
                 <td><code>${t.ticket_number}</code></td>
                 <td>${t.subject}</td>
-                <td>${t.users?.profiles?.full_name || t.users?.email || '—'}</td>
+                <td>
+                    ${t.is_guest
+                        ? `${t.guest_name || 'Guest'} <span class="badge badge-secondary">Guest</span><br><small>${t.guest_email || ''}</small>`
+                        : (t.users?.profiles?.full_name || t.users?.email || '—')}
+                </td>
                 <td>${t.category}</td>
                 <td><span class="badge badge-${t.priority === 'urgent' ? 'danger' : t.priority === 'high' ? 'warning' : 'secondary'}">${t.priority}</span></td>
                 <td><span class="badge badge-${statusColors[t.status] || 'secondary'}">${t.status}</span></td>
@@ -79,7 +83,11 @@ const AdminSupport = {
                 <div style="margin-bottom:1rem">
                     <span class="badge badge-info">${ticket.status}</span>
                     <span class="badge badge-secondary">${ticket.priority}</span>
-                    <span style="color:#94a3b8;font-size:12px">User: ${ticket.users?.email || '—'}</span>
+                    <span style="color:#94a3b8;font-size:12px">User: ${
+                        ticket.is_guest
+                            ? `${ticket.guest_name || 'Guest'} (${ticket.guest_email || 'no email'}) — Guest, not signed in`
+                            : (ticket.users?.email || '—')
+                    }</span>
                 </div>
                 <div style="max-height:300px;overflow-y:auto;margin-bottom:1rem">
                     ${messagesHtml || '<p>No messages yet</p>'}

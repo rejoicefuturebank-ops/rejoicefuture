@@ -12,7 +12,7 @@
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
     />
-    <title>RejoiceFuture - Bank With Confidence</title>
+    <title>Contact Us - RejoiceFuture</title>
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/auth.css" />
     <style>
@@ -21,8 +21,8 @@
          ========================================== */
 
       :root {
-        --bg-primary: #f0f4f8;
-        --bg-secondary: #ffffff;
+        --bg-primary: #e8edf6;
+        --bg-secondary: #e9eef6;
         --bg-tertiary: #e8edf4;
         --bg-card: #ffffff;
         --text-primary: #0a1628;
@@ -1710,6 +1710,107 @@
         .support-panel { width: 100vw; }
         .support-fab { bottom: 16px; right: 16px; width: 54px; height: 54px; font-size: 22px; }
       }
+
+      /* ========== CONTACT PAGE ========== */
+      .contact-page-hero {
+        padding: 130px 2rem 20px;
+        background: var(--bg-primary);
+      }
+
+      .contact-info-section {
+        padding: 2rem 0 4rem;
+        background: var(--bg-primary);
+      }
+
+      .contact-info-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+      }
+
+      .contact-info-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.75rem 1.5rem;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        transition: all 0.3s ease;
+      }
+
+      .contact-info-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-hover);
+        border-color: var(--accent);
+      }
+
+      .contact-info-icon {
+        font-size: 30px;
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      .contact-info-card h3 {
+        font-size: 16px;
+        margin-bottom: 8px;
+        color: var(--text-primary);
+      }
+
+      .contact-info-card p {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin-bottom: 4px;
+        line-height: 1.5;
+      }
+
+      .contact-info-card p a {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .contact-info-card small {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .contact-form-section {
+        background: var(--bg-secondary);
+        border-top: 1px solid var(--border-color);
+        padding: 4rem 0;
+      }
+
+      .contact-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        align-items: start;
+      }
+
+      .contact-form-intro p {
+        color: var(--text-secondary);
+        margin-top: 1rem;
+        font-size: 15px;
+        line-height: 1.8;
+      }
+
+      .contact-page-form {
+        max-width: 480px;
+        background: var(--bg-primary);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.75rem;
+      }
+
+      @media (max-width: 900px) {
+        .contact-info-grid { grid-template-columns: repeat(2, 1fr); }
+        .contact-form-grid { grid-template-columns: 1fr; }
+      }
+
+      @media (max-width: 480px) {
+        .contact-info-grid { grid-template-columns: 1fr; }
+        .contact-page-hero { padding-top: 110px; }
+      }
     </style>
   </head>
   <body>
@@ -1737,392 +1838,90 @@
       </header>
 
       <!-- ========== HERO SECTION ========== -->
-      <section class="hero-section" id="home">
-        <div class="hero-badge">
-          <span class="badge-dot"></span>
-          Trusted by 10M+ Customers Worldwide
-        </div>
-        <h1>
-          Bank With Confidence,<br />
-          <span class="highlight">Wherever You Are</span>
-        </h1>
-        <p class="hero-subtitle">
-          Global banking, multi-currency accounts, gold savings, and secure crypto services — 
-          all designed for your everyday financial needs.
-        </p>
-        <div class="hero-actions">
-          <a href="register.html" class="btn-primary">🚀 Open Your Account</a>
-          <a href="login.html" class="btn-outline">🔑 Sign In</a>
-        </div>
-        <div class="hero-stats">
-          <div class="hero-stat">
-            <span class="number">10M+</span>
-            <span class="label">Customers</span>
-          </div>
-          <div class="hero-stat">
-            <span class="number">150+</span>
-            <span class="label">Countries</span>
-          </div>
-          <div class="hero-stat">
-            <span class="number">$50B+</span>
-            <span class="label">Transferred</span>
-          </div>
-          <div class="hero-stat">
-            <span class="number">4.9★</span>
-            <span class="label">Avg Rating</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- ========== FEATURES ========== -->
-      <section class="features-section" id="features">
+      <!-- ========== CONTACT HERO ========== -->
+      <section class="contact-page-hero">
         <div class="section-container">
           <div class="section-header">
-            <span class="section-tag">Why Choose RejoiceFuture</span>
-            <h2>Everything You Need to <span class="highlight">Bank</span></h2>
-            <p>Simple tools, powerful features, and the security you expect from a modern bank.</p>
-          </div>
-          <div class="features-grid">
-            <div class="feature-card">
-              <span class="feature-icon">🌍</span>
-              <h3>Multi-Currency Accounts</h3>
-              <p>Hold and manage 10+ major currencies in one place. Convert instantly at competitive rates with real-time tracking.</p>
-            </div>
-            <div class="feature-card">
-              <span class="feature-icon">⚡</span>
-              <h3>Fast Transfers</h3>
-              <p>Send money locally or internationally with instant processing and transparent fees. Track every transaction in real-time.</p>
-            </div>
-            <div class="feature-card">
-              <span class="feature-icon">🔒</span>
-              <h3>Bank-Grade Security</h3>
-              <p>Your money is protected with 256-bit encryption, multi-factor authentication, and continuous fraud monitoring 24/7.</p>
-            </div>
-            <div class="feature-card">
-              <span class="feature-icon">📈</span>
-              <h3>Smart Savings</h3>
-              <p>Build your wealth with high-yield savings accounts, goal-based saving tools, and automated investment options.</p>
-            </div>
-            <div class="feature-card">
-              <span class="feature-icon">💳</span>
-              <h3>Everyday Cards</h3>
-              <p>Virtual and physical cards with rewards, spending controls, and global acceptance. Freeze/unfreeze instantly from the app.</p>
-            </div>
-            <div class="feature-card">
-              <span class="feature-icon">💬</span>
-              <h3>24/7 Support</h3>
-              <p>Real humans ready to help whenever you need. Average response time under 2 minutes via chat, email, or phone.</p>
-            </div>
+            <span class="section-tag">Get in Touch</span>
+            <h2>We're Here to <span class="highlight">Help</span></h2>
+            <p>Reach us by phone, email, or the form below — our team typically replies within one business day.</p>
           </div>
         </div>
       </section>
 
-      <!-- ========== BANKING SERVICES ========== -->
-      <section class="services-section" id="services">
+      <!-- ========== CONTACT INFO ========== -->
+      <section class="contact-info-section">
         <div class="section-container">
-          <div class="section-header">
-            <span class="section-tag">Our Services</span>
-            <h2>Complete <span class="highlight">Banking</span> Solutions</h2>
-            <p>From everyday banking to wealth management — we've got you covered.</p>
-          </div>
-          <div class="services-image-grid">
-            <div class="img-item">
-              <img
-                src="https://picsum.photos/seed/rejoice-digital-banking/500/400"
-                alt="Digital banking on mobile"
-                loading="lazy"
-                onerror="this.src='https://via.placeholder.com/500x400/e8edf4/1a56db?text=Digital+Banking'"
-              />
+          <div class="contact-info-grid">
+            <div class="contact-info-card">
+              <span class="contact-info-icon">📞</span>
+              <h3>Call Us</h3>
+              <p><a href="tel:+15551234567">+1 (555) 123-4567</a></p>
+              <small>Mon–Fri, 9am–6pm</small>
             </div>
-            <div class="img-item stagger-down">
-              <img
-                src="https://picsum.photos/seed/rejoice-savings-growth/500/400"
-                alt="Growing your savings"
-                loading="lazy"
-                onerror="this.src='https://via.placeholder.com/500x400/e8edf4/059669?text=Savings+Growth'"
-              />
+            <div class="contact-info-card">
+              <span class="contact-info-icon">✉️</span>
+              <h3>Email Us</h3>
+              <p><a href="mailto:support@rejoicefuturebanking.com">support@rejoicefuturebanking.com</a></p>
+              <small>We reply within 24 hours</small>
             </div>
-            <div class="img-item">
-              <img
-                src="https://picsum.photos/seed/rejoice-card-payments/500/400"
-                alt="Card payments"
-                loading="lazy"
-                onerror="this.src='https://via.placeholder.com/500x400/e8edf4/d4a017?text=Card+Payments'"
-              />
+            <div class="contact-info-card">
+              <span class="contact-info-icon">📍</span>
+              <h3>Visit Us</h3>
+              <p>123 Finance Avenue<br />Suite 400, Carlifornia</p>
+              <small>By appointment only</small>
             </div>
-            <div class="img-item stagger-down">
-              <img
-                src="https://picsum.photos/seed/rejoice-customer-support/500/400"
-                alt="Customer support team"
-                loading="lazy"
-                onerror="this.src='https://via.placeholder.com/500x400/e8edf4/1a56db?text=24%2F7+Support'"
-              />
-            </div>
-          </div>
-          <div class="services-grid">
-            <div class="service-card">
-              <span class="service-icon">🏦</span>
-              <h3>Personal Banking</h3>
-              <p>Everyday banking made simple with checking accounts, savings accounts, and debit cards — all in one place.</p>
-              <ul class="service-features">
-                <li>Free checking accounts</li>
-                <li>High-yield savings</li>
-                <li>No hidden fees</li>
-              </ul>
-            </div>
-            <div class="service-card">
-              <span class="service-icon">💎</span>
-              <h3>Gold Savings</h3>
-              <p>Save and invest in physical gold with ease. Gold has been a trusted store of value for centuries — now available digitally.</p>
-              <ul class="service-features">
-                <li>Backed by physical bullion</li>
-                <li>Live gold pricing</li>
-                <li>Insured storage</li>
-              </ul>
-            </div>
-            <div class="service-card">
-              <span class="service-icon">₿</span>
-              <h3>Bitcoin & Crypto Banking</h3>
-              <p>Buy, sell, and hold Bitcoin and other cryptocurrencies directly from your bank account. Secure and regulated.</p>
-              <ul class="service-features">
-                <li>Bitcoin savings accounts</li>
-                <li>Multi-currency crypto wallets</li>
-                <li>Secure cold storage</li>
-              </ul>
-            </div>
-            <div class="service-card">
-              <span class="service-icon">🏠</span>
-              <h3>Real Estate Banking</h3>
-              <p>Access real estate investment opportunities through our banking platform. Residential, commercial, and industrial.</p>
-              <ul class="service-features">
-                <li>Property investment options</li>
-                <li>Competitive returns</li>
-                <li>Diversified portfolio</li>
-              </ul>
+            <div class="contact-info-card">
+              <span class="contact-info-icon">🕐</span>
+              <h3>Business Hours</h3>
+              <p>Mon–Fri: 9am – 6pm<br />Sat: 10am – 2pm</p>
+              <small>Closed Sundays &amp; holidays</small>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ========== GOLD SECTION ========== -->
-      <section class="gold-section" id="gold">
+      <!-- ========== CONTACT FORM ========== -->
+      <section class="contact-form-section">
         <div class="section-container">
-          <div class="section-header">
-            <span class="section-tag">Precious Metals</span>
-            <h2>Gold Savings — <span class="highlight">Secure</span> &amp; Simple</h2>
-          </div>
-          <div class="gold-grid">
-            <div class="gold-image">
-              <img 
-                src="./gold image.jpg" 
-                alt="Gold Savings"
-                onerror="this.src='https://via.placeholder.com/800x350/e8edf4/d4a017?text=Gold+Savings'"
-              />
+          <div class="contact-form-grid">
+            <div class="contact-form-intro">
+              <span class="section-tag">Send a Message</span>
+              <h2>Have a <span class="highlight">Question</span>?</h2>
+              <p>Fill out the form and a member of our support team will get back to you shortly. For urgent issues, calling us directly is fastest. You can also use the chat button in the corner for quick answers.</p>
             </div>
-            <div class="gold-content">
-              <h3>A <span class="highlight">Trusted</span> Store of Value</h3>
-              <p>Gold has been one of the most valuable precious metals throughout human history, used as a symbol of wealth for centuries due to its rarity and its ability to hold its worth for a long time.</p>
-              <p>At RejoiceFuture, we make gold savings accessible to everyone. Open a gold savings account and start building your wealth with physical gold — backed by bullion stored in secure vaults.</p>
-              <div class="gold-features">
-                <div class="gold-feature">
-                  <span class="icon">🥇</span>
-                  <h5>Physical Bullion</h5>
-                  <p>Backed by real gold</p>
-                </div>
-                <div class="gold-feature">
-                  <span class="icon">📊</span>
-                  <h5>Live Pricing</h5>
-                  <p>Real-time rates</p>
-                </div>
-                <div class="gold-feature">
-                  <span class="icon">🔄</span>
-                  <h5>Easy Conversion</h5>
-                  <p>Gold to cash instantly</p>
-                </div>
-                <div class="gold-feature">
-                  <span class="icon">🏛️</span>
-                  <h5>Insured Storage</h5>
-                  <p>24/7 secure vaults</p>
-                </div>
+            <form class="support-form contact-page-form" id="contactPageForm">
+              <input type="text" class="hp-field" id="contactWebsite" name="website" tabindex="-1" autocomplete="off" />
+              <div class="form-group">
+                <label>Name</label>
+                <input type="text" id="contactName" required maxlength="120" />
               </div>
-            </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="contactEmail" required maxlength="200" />
+              </div>
+              <div class="form-group">
+                <label>Category</label>
+                <select id="contactCategory">
+                  <option value="general">General Inquiry</option>
+                  <option value="account">Account Question</option>
+                  <option value="transfer">Transfer Issue</option>
+                  <option value="card">Card Issue</option>
+                  <option value="security">Security Concern</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Message</label>
+                <textarea id="contactMessage" required minlength="10" maxlength="5000" placeholder="Tell us what's going on..."></textarea>
+              </div>
+              <button type="submit" class="btn-submit" id="contactSubmitBtn">Send Message</button>
+              <div class="support-feedback" id="contactFeedback"></div>
+            </form>
           </div>
         </div>
       </section>
 
-      <!-- ========== CRYPTO / BITCOIN SECTION ========== -->
-      <section class="crypto-section" id="crypto">
-        <div class="section-container">
-          <div class="section-header">
-            <span class="section-tag">Digital Currency</span>
-            <h2>Bitcoin &amp; <span class="highlight">Crypto Banking</span></h2>
-          </div>
-          <div class="crypto-grid">
-            <div class="crypto-content">
-              <h3>Bank with <span class="highlight">Bitcoin</span></h3>
-              <p>For the first time in history, value can be sent anywhere in the world at the same speed as information — in a secure and trust-minimized way. Digital currencies are powered by millions of peers within a globally distributed network.</p>
-              <p>At RejoiceFuture, we believe everyone should have access to the digital economy. Our secure banking platform allows you to buy, sell, and hold Bitcoin and other cryptocurrencies alongside your traditional savings.</p>
-              <p>Save in Bitcoin, earn interest on your crypto holdings, and make instant payments — all from your RejoiceFuture account.</p>
-              <div class="crypto-features">
-                <div class="crypto-feature">
-                  <span class="icon">₿</span>
-                  <h5>Bitcoin Savings</h5>
-                  <p>Earn interest on BTC</p>
-                </div>
-                <div class="crypto-feature">
-                  <span class="icon">🛡️</span>
-                  <h5>Secure Storage</h5>
-                  <p>Cold wallet protection</p>
-                </div>
-                <div class="crypto-feature">
-                  <span class="icon">⚡</span>
-                  <h5>Instant Transfers</h5>
-                  <p>Send crypto in seconds</p>
-                </div>
-                <div class="crypto-feature">
-                  <span class="icon">🌐</span>
-                  <h5>Global Access</h5>
-                  <p>Bank anywhere, anytime</p>
-                </div>
-              </div>
-            </div>
-            <div class="crypto-image">
-              <img 
-                src="https://images.unsplash.com/photo-1621504450181-5d356f61d307?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                alt="Bitcoin Banking"
-                onerror="this.src='https://via.placeholder.com/800x350/e8edf4/1a56db?text=Bitcoin+Banking'"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ========== REAL ESTATE ========== -->
-      <section class="realestate-section" id="realestate">
-        <div class="section-container">
-          <div class="section-header">
-            <span class="section-tag">Alternative Banking</span>
-            <h2>Real Estate <span class="highlight">Investment</span></h2>
-          </div>
-          <div class="realestate-grid">
-            <div class="realestate-content">
-              <h3>Build Wealth Through <span class="highlight">Property</span></h3>
-              <p>Real estate investment involves the purchase, ownership, management, rental, and/or sale of real estate for profit. It is an asset form with limited liquidity relative to other investments.</p>
-              <p>RejoiceFuture offers access to real estate investment opportunities for our banking clients. Diversify your portfolio with residential, commercial, and industrial properties — all managed by our expert team.</p>
-              <div class="realestate-stats">
-                <div class="realestate-stat">
-                  <span class="number">45-80%</span>
-                  <span class="label">ROI Potential</span>
-                </div>
-                <div class="realestate-stat">
-                  <span class="number">50+</span>
-                  <span class="label">Properties</span>
-                </div>
-                <div class="realestate-stat">
-                  <span class="number">15+</span>
-                  <span class="label">Countries</span>
-                </div>
-              </div>
-            </div>
-            <div class="realestate-image">
-              <img 
-                src="./estate-image.jpg" 
-                alt="Real Estate Banking"
-                onerror="this.src='https://via.placeholder.com/800x350/e8edf4/d4a017?text=Real+Estate'"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ========== REVIEWS ========== -->
-      <section class="reviews-section" id="reviews">
-        <div class="section-header">
-          <span class="section-tag">Testimonials</span>
-          <h2>What Our Customers <span class="highlight">Say</span></h2>
-          <p>Real stories from real people who trust RejoiceFuture with their financial future.</p>
-        </div>
-        <div class="reviews-grid">
-          <div class="review-card">
-            <div class="stars">★★★★★</div>
-            <p class="review-text">
-              "The multi-currency accounts changed how I do business. I'm a freelancer and get paid in dollars, euros, and pounds — all in one place. It's incredibly convenient."
-            </p>
-            <div class="reviewer">
-              <div class="reviewer-avatar">
-                <img src="https://i.pravatar.cc/150?img=12" alt="Alex Sousa" loading="lazy" onerror="this.parentElement.textContent='AS'" />
-              </div>
-              <div>
-                <div class="reviewer-name">Alex Sousa</div>
-                <div class="reviewer-role">Freelance Designer</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="review-card">
-            <div class="stars">★★★★★</div>
-            <p class="review-text">
-              "I've been with RejoiceFuture for two years and they've never let me down. The support team is responsive, the app is intuitive, and the security features give me peace of mind."
-            </p>
-            <div class="reviewer">
-              <div class="reviewer-avatar">
-                <img src="https://i.pravatar.cc/150?img=47" alt="Megan Kim" loading="lazy" onerror="this.parentElement.textContent='MK'" />
-              </div>
-              <div>
-                <div class="reviewer-name">Megan Kim</div>
-                <div class="reviewer-role">Small Business Owner</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="review-card">
-            <div class="stars">★★★★★</div>
-            <p class="review-text">
-              "Started with gold savings to diversify my portfolio. The process was simple to understand and the app made it easy to track my gold holdings. Highly recommended."
-            </p>
-            <div class="reviewer">
-              <div class="reviewer-avatar">
-                <img src="https://i.pravatar.cc/150?img=33" alt="Rahul Patel" loading="lazy" onerror="this.parentElement.textContent='RP'" />
-              </div>
-              <div>
-                <div class="reviewer-name">Rahul Patel</div>
-                <div class="reviewer-role">Software Engineer</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="review-card">
-            <div class="stars">★★★★★</div>
-            <p class="review-text">
-              "Transferring money to family abroad used to be stressful and expensive. Now it takes minutes, the fees are fair, and I can track everything in real-time."
-            </p>
-            <div class="reviewer">
-              <div class="reviewer-avatar">
-                <img src="https://i.pravatar.cc/150?img=45" alt="Lena Cruz" loading="lazy" onerror="this.parentElement.textContent='LC'" />
-              </div>
-              <div>
-                <div class="reviewer-name">Lena Cruz</div>
-                <div class="reviewer-role">Healthcare Professional</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ========== CTA ========== -->
-      <section class="cta-section">
-        <h2>Ready to Start <span class="highlight">Banking</span>?</h2>
-        <p>
-          Join millions of people who trust RejoiceFuture with their money.
-          Open your account in minutes and start building your financial future today.
-        </p>
-        <div class="cta-buttons">
-          <a href="register.html" class="btn-primary">🚀 Open Account</a>
-          <a href="login.html" class="btn-outline">🔑 Sign In</a>
-        </div>
-      </section>
-
-      <!-- ========== FOOTER ========== -->
       <footer class="landing-footer">
         <div class="footer-content">
           <div class="footer-brand">
@@ -2346,6 +2145,56 @@
             subject: 'Website Contact Form',
             message: document.getElementById('supportMessage').value,
             website: document.getElementById('supportWebsite').value // honeypot
+          };
+
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Sending...';
+
+          try {
+            const response = await fetch(`${PUBLIC_API_BASE}/public/contact`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            const data = await response.json();
+
+            if (!response.ok) {
+              throw new Error(data.error || 'Something went wrong. Please try again.');
+            }
+
+            feedback.textContent = data.message || 'Thanks! We received your message.';
+            feedback.className = 'support-feedback success';
+            form.reset();
+          } catch (error) {
+            feedback.textContent = error.message;
+            feedback.className = 'support-feedback error';
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send Message';
+          }
+        });
+      })();
+
+      // ========== CONTACT PAGE FORM ==========
+      (function () {
+        const PUBLIC_API_BASE = 'https://rejoicefuturebank.vercel.app/api';
+        const form = document.getElementById('contactPageForm');
+        const feedback = document.getElementById('contactFeedback');
+        const submitBtn = document.getElementById('contactSubmitBtn');
+        if (!form) return;
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          feedback.className = 'support-feedback';
+          feedback.textContent = '';
+
+          const payload = {
+            name: document.getElementById('contactName').value,
+            email: document.getElementById('contactEmail').value,
+            category: document.getElementById('contactCategory').value,
+            subject: 'Contact Page Form',
+            message: document.getElementById('contactMessage').value,
+            website: document.getElementById('contactWebsite').value // honeypot
           };
 
           submitBtn.disabled = true;
