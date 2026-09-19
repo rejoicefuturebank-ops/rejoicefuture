@@ -6,15 +6,10 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
     />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta
-      name="apple-mobile-web-app-status-bar-style"
-      content="black-translucent"
-    />
-    <title>Register - RejoiceFuture</title>
+    <title>Create your account - RejoiceFutureBank</title>
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/auth.css" />
+    <link rel="stylesheet" href="css/signup-wizard.css" />
   </head>
   <body class="auth-page">
     <div class="auth-container">
@@ -22,116 +17,205 @@
         <div class="auth-header">
           <div class="logo">
             <span class="logo-icon">🏦</span>
-            <span class="logo-text">RejoiceFuture</span>
+            <span class="logo-text">RejoiceFutureBank</span>
           </div>
-          <h2>Create Your Account</h2>
-          <p>Join millions banking globally</p>
         </div>
 
-        <form id="registerForm" class="auth-form">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="first_name">First Name</label>
-              <input type="text" id="first_name" name="first_name" required />
-            </div>
-            <div class="form-group">
-              <label for="last_name">Last Name</label>
-              <input type="text" id="last_name" name="last_name" required />
-            </div>
-          </div>
+        <!-- Progress indicator -->
+        <div class="signup-progress" id="signupProgress">
+          <div class="signup-progress-step" data-step="1"><span>1</span>Personal</div>
+          <div class="signup-progress-step" data-step="2"><span>2</span>Account</div>
+          <div class="signup-progress-step" data-step="3"><span>3</span>Location</div>
+          <div class="signup-progress-step" data-step="4"><span>4</span>Review</div>
+          <div class="signup-progress-step" data-step="5"><span>5</span>Verify</div>
+        </div>
+        <div class="signup-progress-mobile" id="signupProgressMobile">Step 1 of 5</div>
+
+        <div id="registerError" class="alert alert-error" style="display:none"></div>
+
+        <!-- STEP 1: Personal information -->
+        <section class="signup-step" id="step1">
+          <h2>Create your account</h2>
+          <p class="text-muted">Let's start with the basics.</p>
 
           <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" required />
+            <label for="s1_first_name">First name</label>
+            <input type="text" id="s1_first_name" required />
           </div>
-
           <div class="form-group">
-            <label for="phone">Phone Number</label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              placeholder="+1 234 567 8900"
-            />
+            <label for="s1_middle_name">Middle name <small class="text-muted">(optional)</small></label>
+            <input type="text" id="s1_middle_name" />
           </div>
-
+          <div class="form-group">
+            <label for="s1_last_name">Last name</label>
+            <input type="text" id="s1_last_name" required />
+          </div>
           <div class="form-row">
             <div class="form-group">
-              <label for="date_of_birth">Date of Birth</label>
-              <input type="date" id="date_of_birth" name="date_of_birth" />
+              <label for="s1_dob">Date of birth</label>
+              <input type="date" id="s1_dob" required />
             </div>
             <div class="form-group">
-              <label for="country">Country</label>
-              <select id="country" name="country">
-                <option value="">Select Country</option>
-                <option value="US">United States</option>
-                <option value="GB">United Kingdom</option>
-                <option value="DE">Germany</option>
-                <option value="FR">France</option>
-                <option value="CA">Canada</option>
-                <option value="AU">Australia</option>
-                <option value="CH">Switzerland</option>
-                <option value="JP">Japan</option>
-                <option value="AE">UAE</option>
-                <option value="NG">Nigeria</option>
-                <option value="CN">China</option>
+              <label for="s1_gender">Gender</label>
+              <select id="s1_gender" required>
+                <option value="">Select</option>
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+                <option value="non_binary">Non-binary</option>
+                <option value="prefer_not_to_say">Prefer not to say</option>
               </select>
             </div>
           </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                required
-                minlength="8"
-              />
-            </div>
-            <div class="form-group">
-              <label for="confirm_password">Confirm Password</label>
-              <input
-                type="password"
-                id="confirm_password"
-                name="confirm_password"
-                required
-              />
-            </div>
-          </div>
+          <button type="button" class="btn btn-primary btn-block" onclick="Register.goToStep(2)">Continue</button>
+          <div class="auth-footer"><p>Already have an account? <a href="login.html">Sign in</a></p></div>
+        </section>
 
-          <div class="password-strength" id="passwordStrength"></div>
+        <!-- STEP 2: Email + password -->
+        <section class="signup-step" id="step2" style="display:none">
+          <h2>Secure your account</h2>
+          <p class="text-muted">This is how you'll sign in.</p>
 
           <div class="form-group">
-            <label class="checkbox-label">
-              <input type="checkbox" id="terms" required />
-              <span>I agree to the Terms of Service and Privacy Policy</span>
-            </label>
+            <label for="s2_email">Email address</label>
+            <input type="email" id="s2_email" required />
+          </div>
+          <div class="form-group">
+            <label for="s2_password">Create password</label>
+            <div class="password-input-wrap">
+              <input type="password" id="s2_password" required minlength="8" />
+              <button type="button" class="password-toggle" onclick="Register.togglePassword('s2_password')">👁</button>
+            </div>
+            <ul class="password-requirements" id="s2_requirements">
+              <li data-rule="length">At least 8 characters</li>
+              <li data-rule="upper">Uppercase letter</li>
+              <li data-rule="lower">Lowercase letter</li>
+              <li data-rule="number">Number</li>
+              <li data-rule="special">Special character</li>
+            </ul>
+          </div>
+          <div class="form-group">
+            <label for="s2_confirm">Confirm password</label>
+            <div class="password-input-wrap">
+              <input type="password" id="s2_confirm" required />
+              <button type="button" class="password-toggle" onclick="Register.togglePassword('s2_confirm')">👁</button>
+            </div>
           </div>
 
-          <button
-            type="submit"
-            class="btn btn-primary btn-block"
-            id="registerBtn"
-          >
-            Create Account
-          </button>
-        </form>
+          <div class="flex gap-1">
+            <button type="button" class="btn btn-outline" onclick="Register.goToStep(1)">Back</button>
+            <button type="button" class="btn btn-primary btn-block" id="step2ContinueBtn" onclick="Register.submitStep2()">Continue</button>
+          </div>
+        </section>
 
-        <div class="auth-footer">
-          <p>Already have an account? <a href="login.html">Sign in</a></p>
-        </div>
+        <!-- STEP 3: Location -->
+        <section class="signup-step" id="step3" style="display:none">
+          <h2>Where are you located?</h2>
+          <p class="text-muted">This helps us set up your account correctly.</p>
 
-        <div
-          id="registerError"
-          class="alert alert-error"
-          style="display: none"
-        ></div>
+          <div class="form-group">
+            <label for="s3_country">Country</label>
+            <select id="s3_country" required>
+              <option value="">Select Country</option>
+              <option value="US">United States</option>
+              <option value="GB">United Kingdom</option>
+              <option value="NG">Nigeria</option>
+              <option value="GH">Ghana</option>
+              <option value="KE">Kenya</option>
+              <option value="ZA">South Africa</option>
+              <option value="DE">Germany</option>
+              <option value="FR">France</option>
+              <option value="CA">Canada</option>
+              <option value="AU">Australia</option>
+              <option value="CH">Switzerland</option>
+              <option value="JP">Japan</option>
+              <option value="AE">UAE</option>
+              <option value="CN">China</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="s3_state">State / Province / Region</label>
+            <input type="text" id="s3_state" required />
+          </div>
+          <div class="form-group">
+            <label for="s3_city">City</label>
+            <input type="text" id="s3_city" required />
+          </div>
+          <div class="form-group">
+            <label for="s3_address">Residential address</label>
+            <textarea id="s3_address" rows="2" required></textarea>
+          </div>
+
+          <div class="flex gap-1">
+            <button type="button" class="btn btn-outline" onclick="Register.goToStep(2)">Back</button>
+            <button type="button" class="btn btn-primary btn-block" id="step3ContinueBtn" onclick="Register.submitStep3()">Continue</button>
+          </div>
+        </section>
+
+        <!-- STEP 4: Review -->
+        <section class="signup-step" id="step4" style="display:none">
+          <h2>Review your information</h2>
+
+          <div class="review-section">
+            <div class="flex-between"><h4>Personal information</h4><a href="#" onclick="Register.goToStep(1); return false;">Edit</a></div>
+            <p id="review_name"></p>
+            <p id="review_dob"></p>
+            <p id="review_gender"></p>
+          </div>
+
+          <div class="review-section">
+            <div class="flex-between"><h4>Account information</h4><a href="#" onclick="Register.goToStep(2); return false;">Edit</a></div>
+            <p id="review_email"></p>
+          </div>
+
+          <div class="review-section">
+            <div class="flex-between"><h4>Location</h4><a href="#" onclick="Register.goToStep(3); return false;">Edit</a></div>
+            <p id="review_location"></p>
+            <p id="review_address"></p>
+          </div>
+
+          <div class="flex gap-1">
+            <button type="button" class="btn btn-outline" onclick="Register.goToStep(3)">Back</button>
+            <button type="button" class="btn btn-primary btn-block" id="step4ContinueBtn" onclick="Register.submitStep4()">Continue</button>
+          </div>
+        </section>
+
+        <!-- STEP 5: Email verification -->
+        <section class="signup-step" id="step5" style="display:none">
+          <h2>Verify your email</h2>
+          <p class="text-muted">We've sent a verification code to <strong id="verify_email_display"></strong>.</p>
+
+          <div class="otp-input-group">
+            <input type="text" maxlength="1" class="otp-digit" data-index="0" inputmode="numeric" />
+            <input type="text" maxlength="1" class="otp-digit" data-index="1" inputmode="numeric" />
+            <input type="text" maxlength="1" class="otp-digit" data-index="2" inputmode="numeric" />
+            <input type="text" maxlength="1" class="otp-digit" data-index="3" inputmode="numeric" />
+            <input type="text" maxlength="1" class="otp-digit" data-index="4" inputmode="numeric" />
+            <input type="text" maxlength="1" class="otp-digit" data-index="5" inputmode="numeric" />
+          </div>
+
+          <button type="button" class="btn btn-primary btn-block" id="verifyBtn" onclick="Register.submitVerification()">Verify</button>
+
+          <p class="text-center mt-1">
+            <a href="#" id="resendLink" onclick="Register.resendCode(); return false;">Resend code</a>
+            <span id="resendCooldown" class="text-muted" style="display:none"></span>
+          </p>
+          <p class="text-center"><a href="#" onclick="Register.goToStep(2); return false;">Change email</a></p>
+        </section>
+
+        <!-- STEP 6 (visual only): Activated -->
+        <section class="signup-step" id="stepDone" style="display:none">
+          <div class="text-center">
+            <div style="font-size:48px">✅</div>
+            <h2>Your account is ready.</h2>
+            <p class="text-muted">Welcome to RejoiceFutureBank.</p>
+            <button class="btn btn-primary btn-block mt-2" onclick="window.location.href='/dashboard.html'">Go to Dashboard</button>
+          </div>
+        </section>
       </div>
     </div>
 
-    <script src="/JAVASCRIPT/api.js"></script>
-    <script src="./JAVASCRIPT/auth.js"></script>
+    <script src="./JAVASCRIPT/api.js"></script>
+    <script src="./JAVASCRIPT/register.js"></script>
   </body>
 </html>

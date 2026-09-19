@@ -77,6 +77,35 @@ const API = {
         return this.request('/auth/me');
     },
 
+    // Stepped signup flow
+    async updateRegistrationLocation(data) {
+        return this.request('/auth/register/location', { method: 'PATCH', body: JSON.stringify(data) });
+    },
+
+    async getRegistrationReview() {
+        return this.request('/auth/register/review');
+    },
+
+    async sendVerificationCode() {
+        return this.request('/auth/register/send-verification', { method: 'POST' });
+    },
+
+    async resendVerificationCode() {
+        return this.request('/auth/register/resend-code', { method: 'POST' });
+    },
+
+    async verifyEmailCode(code) {
+        return this.request('/auth/register/verify-email', { method: 'POST', body: JSON.stringify({ code }) });
+    },
+
+    async forgotPassword(email) {
+        return this.request('/auth/forgot-password', { method: 'POST', body: JSON.stringify({ email }) });
+    },
+
+    async resetPassword(token, newPassword) {
+        return this.request('/auth/reset-password', { method: 'POST', body: JSON.stringify({ token, newPassword }) });
+    },
+
     // Accounts
     async getAccounts() {
         return this.request('/accounts');
@@ -90,8 +119,13 @@ const API = {
         return this.request('/accounts', { method: 'POST', body: JSON.stringify(data) });
     },
 
-    async deposit(accountId, data) {
-        return this.request(`/accounts/${accountId}/deposit`, { method: 'POST', body: JSON.stringify(data) });
+    // Funding (real money in — replaces the old fake "deposit")
+    async initiateFunding(data) {
+        return this.request('/funding/initiate', { method: 'POST', body: JSON.stringify(data) });
+    },
+
+    async getFundingStatus(reference) {
+        return this.request(`/funding/status/${reference}`);
     },
 
     async convert(data) {
@@ -102,9 +136,14 @@ const API = {
         return this.request('/accounts/exchange-rates');
     },
 
-    // Transfers
-    async createTransfer(data) {
-        return this.request('/transfers', { method: 'POST', body: JSON.stringify(data) });
+    // Transfers — split into internal (same-app, real ledger movement)
+    // and external (payout via Flutterwave to a saved beneficiary)
+    async sendInternalTransfer(data) {
+        return this.request('/transfers/internal', { method: 'POST', body: JSON.stringify(data) });
+    },
+
+    async sendExternalTransfer(data) {
+        return this.request('/transfers/external', { method: 'POST', body: JSON.stringify(data) });
     },
 
     async getTransferHistory(params = {}) {
@@ -116,16 +155,16 @@ const API = {
         return this.request('/transfers/beneficiaries');
     },
 
+    async getBanks(countryCode) {
+        return this.request(`/transfers/banks/${countryCode}`);
+    },
+
     async addBeneficiary(data) {
         return this.request('/transfers/beneficiaries', { method: 'POST', body: JSON.stringify(data) });
     },
 
     async removeBeneficiary(id) {
         return this.request(`/transfers/beneficiaries/${id}`, { method: 'DELETE' });
-    },
-
-    async withdraw(data) {
-        return this.request('/transfers/withdraw', { method: 'POST', body: JSON.stringify(data) });
     },
 
     // Cards

@@ -1,0 +1,130 @@
+/* Signup wizard — additive styles, does not touch existing auth.css rules.
+   Uses the same CSS custom properties referenced elsewhere in the app
+   (--border-color etc.) so it inherits your existing theme automatically. */
+
+.signup-progress {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    gap: 4px;
+}
+.signup-progress-step {
+    flex: 1;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted, #94a3b8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+.signup-progress-step span {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--border-color, #e2e8f0);
+    color: inherit;
+    font-weight: 600;
+}
+.signup-progress-step.active span {
+    background: var(--primary-color, #2563eb);
+    color: #fff;
+}
+.signup-progress-step.done span {
+    background: var(--success-color, #059669);
+    color: #fff;
+}
+.signup-progress-step.active {
+    color: var(--primary-color, #2563eb);
+    font-weight: 600;
+}
+
+.signup-progress-mobile {
+    display: none;
+    font-size: 13px;
+    color: var(--text-muted, #94a3b8);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+@media (max-width: 640px) {
+    .signup-progress { display: none; }
+    .signup-progress-mobile { display: block; }
+}
+
+.password-input-wrap {
+    position: relative;
+}
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.6;
+}
+
+.password-requirements {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+    font-size: 12px;
+    color: var(--text-muted, #94a3b8);
+}
+.password-requirements li {
+    padding: 2px 0;
+}
+.password-requirements li::before {
+    content: "○ ";
+}
+.password-requirements li.met {
+    color: var(--success-color, #059669);
+}
+.password-requirements li.met::before {
+    content: "✓ ";
+}
+
+.otp-input-group {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin: 1.5rem 0;
+}
+.otp-digit {
+    width: 44px;
+    height: 52px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 8px;
+}
+.otp-digit:focus {
+    outline: none;
+    border-color: var(--primary-color, #2563eb);
+}
+
+.review-section {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color, #e2e8f0);
+}
+.review-section:last-of-type {
+    border-bottom: none;
+}
+.review-section h4 {
+    margin: 0;
+    font-size: 14px;
+}
+.review-section p {
+    margin: 4px 0 0;
+    color: var(--text-muted, #94a3b8);
+    font-size: 14px;
+}
+
+.text-center { text-align: center; }

@@ -21,8 +21,21 @@ document.addEventListener("DOMContentLoaded", () => {
         if (response.token) {
           API.setToken(response.token);
           localStorage.setItem("user_data", JSON.stringify(response));
-          Utils.showToast("Login successful!", "success");
-          setTimeout(() => (window.location.href = "/dashboard.html"), 500);
+
+          // Server is authoritative on where we go next — never assume
+          // a successful login means the account is fully set up.
+          if (response.registration_status === "active") {
+            Utils.showToast("Login successful!", "success");
+            setTimeout(() => (window.location.href = "/dashboard.html"), 500);
+          } else if (response.registration_status === "email_pending") {
+            Utils.showToast("Let's verify your email to finish setting up your account.", "info");
+            setTimeout(() => (window.location.href = "/register.html?stage=5"), 500);
+          } else {
+            // in_progress
+            const remaining = 5 - (response.signup_stage || 2);
+            Utils.showToast(`Let's finish setting up your account. You have ${remaining} step${remaining === 1 ? '' : 's'} remaining.`, "info");
+            setTimeout(() => (window.location.href = `/register.html?stage=${response.signup_stage || 2}`), 500);
+          }
         }
       } catch (error) {
         errorDiv.textContent = error.message;
@@ -34,91 +47,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Register Form
-  const registerForm = document.getElementById("registerForm");
-  if (registerForm) {
-    registerForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const password = document.getElementById("password").value;
-      const confirmPassword = document.getElementById("confirm_password").value;
-      const errorDiv = document.getElementById("registerError");
-
-      if (password !== confirmPassword) {
-        errorDiv.textContent = "Passwords do not match";
-        errorDiv.style.display = "block";
-        return;
-      }
-
-      const btn = document.getElementById("registerBtn");
-      btn.disabled = true;
-      btn.textContent = "Creating account...";
-      errorDiv.style.display = "none";
-
-    
-      try {
-        const data = {
-          email: document.getElementById("email").value,
-          password,
-          first_name: document.getElementById("first_name").value,
-          last_name: document.getElementById("last_name").value,
-          phone: document.getElementById("phone").value,
-          date_of_birth: document.getElementById("date_of_birth").value,
-          country: document.getElementById("country").value,
-        };
-
-        const response = await API.register(data);
-
-        if (response.token) {
-          // Store token and user data
-          API.setToken(response.token);
-          localStorage.setItem("user_data", JSON.stringify(response));
-
-          Utils.showToast(
-            "Account created successfully! Redirecting...",
-            "success",
-          );
-
-          // Redirect after a short delay to show the toast
-          setTimeout(() => {
-            window.location.href = "/dashboard.html";
-          }, 1000);
-        }
-      } catch (error) {
-        errorDiv.textContent = error.message;
-        errorDiv.style.display = "block";
-        btn.disabled = false;
-        btn.textContent = "Create Account";
-      } finally {
-        btn.disabled = false;
-      }
-    });
-
-    // Password strength indicator
-    const passwordInput = document.getElementById("password");
-    const strengthDiv = document.getElementById("passwordStrength");
-    if (passwordInput && strengthDiv) {
-      passwordInput.addEventListener("input", () => {
-        const val = passwordInput.value;
-        let strength = 0;
-        if (val.length >= 8) strength++;
-        if (/[A-Z]/.test(val)) strength++;
-        if (/[0-9]/.test(val)) strength++;
-        if (/[^A-Za-z0-9]/.test(val)) strength++;
-
-        strengthDiv.className = "password-strength";
-        if (val.length === 0) {
-          strengthDiv.style.background = "transparent";
-        } else if (strength <= 1) {
-          strengthDiv.classList.add("weak");
-        } else if (strength <= 2) {
-          strengthDiv.classList.add("medium");
-        } else {
-          strengthDiv.classList.add("strong");
-        }
-      });
-    }
-  }
+  // NOTE: the old single-page registration form has been replaced by the
+  // 5-step wizard in register.html / register.js. This file no longer
+  // handles a #registerForm submit — see Register in register.js.
 
   // Admin Login
   const adminLoginForm = document.getElementById("adminLoginForm");
@@ -165,7 +96,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Check auth on dashboard
+  // Check auth on dashboard — registration-status enforcement itself
+  // lives in Dashboard.checkAccountStatus() (dashboard.js), which already
+  // calls /auth/me on init; no need to duplicate that call here.
   if (window.location.pathname.includes("dashboard.html")) {
     Utils.requireAuth();
   }
