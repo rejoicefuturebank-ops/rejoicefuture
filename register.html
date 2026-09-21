@@ -10,6 +10,725 @@
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/auth.css" />
     <link rel="stylesheet" href="css/signup-wizard.css" />
+    <style>
+      /* ========== PROFESSIONAL BANKING THEME ========== */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body.auth-page {
+        background: linear-gradient(145deg, #0b1e3a 0%, #1a3a5f 100%);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        margin: 0;
+      }
+
+      .auth-container {
+        width: 100%;
+        max-width: 580px;
+        margin: 0 auto;
+      }
+
+      .auth-card {
+        background: #ffffff;
+        border-radius: 28px;
+        box-shadow: 0 25px 50px -8px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        padding: 2rem 2rem 2rem 2rem;
+        transition: all 0.2s ease;
+      }
+
+      .auth-card-wide {
+        max-width: 100%;
+      }
+
+      /* ----- logo & header ----- */
+      .auth-header {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: #0b1e3a;
+        letter-spacing: -0.02em;
+      }
+
+      .logo-icon {
+        font-size: 2rem;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+      }
+
+      .logo-text {
+        background: linear-gradient(135deg, #1a3a5f, #0b1e3a);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* ===== PROGRESS INDICATOR — SAME ON ALL SCREENS ===== */
+      .signup-progress {
+        display: flex;
+        justify-content: space-between;
+        margin: 1.5rem 0 1.25rem 0;
+        padding: 0;
+        position: relative;
+        width: 100%;
+      }
+
+      .signup-progress::before {
+        content: '';
+        position: absolute;
+        top: 14px;
+        left: 8%;
+        right: 8%;
+        height: 2px;
+        background: #e2e8f0;
+        z-index: 0;
+      }
+
+      .signup-progress-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 0.65rem;
+        font-weight: 500;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        position: relative;
+        z-index: 1;
+        background: #ffffff;
+        padding: 0 0.15rem;
+        flex: 1;
+        min-width: 0;
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      .signup-progress-step span {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #f1f5f9;
+        border: 2px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.75rem;
+        color: #475569;
+        margin-bottom: 0.4rem;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+      }
+
+      .signup-progress-step.active span {
+        background: #1a3a5f;
+        border-color: #1a3a5f;
+        color: white;
+        box-shadow: 0 4px 8px rgba(26, 58, 95, 0.25);
+      }
+
+      .signup-progress-step.active {
+        color: #0b1e3a;
+        font-weight: 600;
+      }
+
+      /* Hide the old mobile-only progress text — we use the same bar now */
+      .signup-progress-mobile {
+        display: none !important;
+      }
+
+      /* ----- typography & spacing ----- */
+      h2 {
+        font-size: 1.65rem;
+        font-weight: 600;
+        color: #0b1e3a;
+        margin-bottom: 0.3rem;
+        letter-spacing: -0.02em;
+      }
+
+      .text-muted {
+        color: #64748b;
+        font-size: 0.9rem;
+        margin-bottom: 1.75rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.25rem;
+      }
+
+      label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: #1e293b;
+        margin-bottom: 0.4rem;
+        letter-spacing: 0.01em;
+      }
+
+      label small {
+        font-weight: 400;
+        font-size: 0.75rem;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 14px;
+        font-size: 0.95rem;
+        background: #f9fcff;
+        transition: all 0.15s ease;
+        color: #0b1e3a;
+        font-family: inherit;
+        appearance: none;
+        -webkit-appearance: none;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #1a3a5f;
+        box-shadow: 0 0 0 4px rgba(26, 58, 95, 0.1);
+        background: #ffffff;
+      }
+
+      input::placeholder,
+      textarea::placeholder {
+        color: #94a3b8;
+      }
+
+      select {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2347565f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1.2rem;
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 70px;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+
+      /* ----- password & OTP ----- */
+      .password-input-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .password-input-wrap input {
+        padding-right: 2.8rem;
+      }
+
+      .password-toggle {
+        position: absolute;
+        right: 1rem;
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: #64748b;
+        padding: 0;
+        line-height: 1;
+        opacity: 0.7;
+        transition: opacity 0.15s;
+      }
+
+      .password-toggle:hover {
+        opacity: 1;
+      }
+
+      .password-requirements {
+        list-style: none;
+        margin-top: 0.6rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1rem;
+        font-size: 0.7rem;
+        color: #64748b;
+      }
+
+      .password-requirements li {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
+
+      .password-requirements li::before {
+        content: '○';
+        font-size: 0.75rem;
+        color: #94a3b8;
+      }
+
+      .password-requirements li.valid::before {
+        content: '●';
+        color: #10b981;
+      }
+
+      /* ----- OTP inputs ----- */
+      .otp-input-group {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: center;
+        margin: 1.5rem 0 1.5rem;
+      }
+
+      .otp-digit {
+        width: 50px;
+        height: 58px;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 600;
+        padding: 0;
+        border-radius: 16px;
+        border: 1.5px solid #e2e8f0;
+        background: #f9fcff;
+        color: #0b1e3a;
+        transition: all 0.15s;
+      }
+
+      .otp-digit:focus {
+        border-color: #1a3a5f;
+        box-shadow: 0 0 0 4px rgba(26, 58, 95, 0.1);
+        background: #ffffff;
+      }
+
+      /* ----- buttons ----- */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.85rem 1.5rem;
+        border-radius: 40px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        letter-spacing: 0.01em;
+        transition: all 0.15s ease;
+        border: 1.5px solid transparent;
+        cursor: pointer;
+        text-decoration: none;
+        font-family: inherit;
+      }
+
+      .btn-primary {
+        background: linear-gradient(145deg, #1a3a5f, #0b1e3a);
+        color: white;
+        box-shadow: 0 6px 14px rgba(11, 30, 58, 0.25);
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(145deg, #0f2a44, #08162b);
+        box-shadow: 0 10px 20px rgba(11, 30, 58, 0.3);
+        transform: translateY(-1px);
+      }
+
+      .btn-primary:active {
+        transform: translateY(0);
+        box-shadow: 0 4px 8px rgba(11, 30, 58, 0.2);
+      }
+
+      .btn-outline {
+        background: transparent;
+        border-color: #cbd5e1;
+        color: #1e293b;
+      }
+
+      .btn-outline:hover {
+        background: #f8fafc;
+        border-color: #94a3b8;
+      }
+
+      .btn-block {
+        flex: 1;
+        width: 100%;
+      }
+
+      .flex {
+        display: flex;
+        gap: 0.75rem;
+      }
+
+      .gap-1 {
+        gap: 0.75rem;
+      }
+
+      .flex-between {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      /* ----- review sections (step 4) ----- */
+      .review-section {
+        background: #f8fafc;
+        border-radius: 16px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1rem;
+        border: 1px solid #eef2f6;
+      }
+
+      .review-section h4 {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #1e293b;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+
+      .review-section a {
+        font-size: 0.75rem;
+        color: #1a3a5f;
+        font-weight: 500;
+        text-decoration: none;
+      }
+
+      .review-section a:hover {
+        text-decoration: underline;
+      }
+
+      .review-section p {
+        font-size: 0.9rem;
+        color: #0b1e3a;
+        margin: 0.2rem 0;
+        font-weight: 500;
+      }
+
+      .review-section p:last-child {
+        margin-bottom: 0;
+      }
+
+      /* ----- alerts & messages ----- */
+      .alert {
+        padding: 0.85rem 1rem;
+        border-radius: 14px;
+        font-size: 0.85rem;
+        margin-bottom: 1.25rem;
+      }
+
+      .alert-error {
+        background: #fef2f2;
+        color: #b91c1c;
+        border: 1px solid #fecaca;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .mt-1 {
+        margin-top: 1rem;
+      }
+
+      .mt-2 {
+        margin-top: 1.5rem;
+      }
+
+      .auth-footer {
+        margin-top: 1.5rem;
+        text-align: center;
+        font-size: 0.85rem;
+        color: #64748b;
+      }
+
+      .auth-footer a {
+        color: #1a3a5f;
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .auth-footer a:hover {
+        text-decoration: underline;
+      }
+
+      /* ============================================================
+         RESPONSIVE — 220px to 700px
+         Keeps the SAME progress bar layout (dots + labels)
+         ============================================================ */
+
+      /* Tablet / large phone */
+      @media (max-width: 700px) {
+        body.auth-page {
+          padding: 1rem;
+          align-items: flex-start;
+        }
+
+        .auth-card {
+          padding: 1.75rem 1.5rem;
+          border-radius: 24px;
+        }
+
+        .signup-progress-step {
+          font-size: 0.6rem;
+        }
+
+        .signup-progress-step span {
+          width: 26px;
+          height: 26px;
+          font-size: 0.7rem;
+        }
+
+        .signup-progress::before {
+          top: 13px;
+        }
+      }
+
+      /* Small phone */
+      @media (max-width: 560px) {
+        body.auth-page {
+          padding: 0.75rem;
+        }
+
+        .auth-card {
+          padding: 1.5rem 1.25rem;
+          border-radius: 22px;
+        }
+
+        h2 {
+          font-size: 1.4rem;
+        }
+
+        .form-row {
+          grid-template-columns: 1fr;
+          gap: 0;
+        }
+
+        .otp-digit {
+          width: 42px;
+          height: 50px;
+          font-size: 1.3rem;
+          border-radius: 12px;
+        }
+
+        .otp-input-group {
+          gap: 0.35rem;
+        }
+
+        .flex {
+          flex-wrap: wrap;
+        }
+
+        .btn {
+          padding: 0.8rem 1rem;
+          font-size: 0.9rem;
+        }
+
+        .review-section {
+          padding: 0.9rem 1rem;
+        }
+
+        .logo-text {
+          font-size: 1.25rem;
+        }
+
+        .logo-icon {
+          font-size: 1.6rem;
+        }
+
+        /* Progress bar adjustments for small screens */
+        .signup-progress {
+          margin: 1.25rem 0 1rem 0;
+        }
+
+        .signup-progress-step {
+          font-size: 0.5rem;
+          letter-spacing: 0;
+          padding: 0 0.05rem;
+        }
+
+        .signup-progress-step span {
+          width: 22px;
+          height: 22px;
+          font-size: 0.6rem;
+          border-width: 1.5px;
+          margin-bottom: 0.3rem;
+        }
+
+        .signup-progress::before {
+          top: 11px;
+          left: 6%;
+          right: 6%;
+          height: 1.5px;
+        }
+      }
+
+      /* Very small phone — down to 220px */
+      @media (max-width: 420px) {
+        .auth-card {
+          padding: 1.25rem 1rem;
+          border-radius: 20px;
+        }
+
+        .logo-text {
+          font-size: 1.1rem;
+        }
+
+        .logo-icon {
+          font-size: 1.4rem;
+        }
+
+        .signup-progress {
+          margin: 1rem 0 0.9rem 0;
+        }
+
+        .signup-progress-step {
+          font-size: 0.42rem;
+          letter-spacing: 0;
+          padding: 0;
+        }
+
+        .signup-progress-step span {
+          width: 20px;
+          height: 20px;
+          font-size: 0.55rem;
+          border-width: 1.5px;
+          margin-bottom: 0.25rem;
+        }
+
+        .signup-progress::before {
+          top: 10px;
+          left: 5%;
+          right: 5%;
+          height: 1.5px;
+        }
+
+        h2 {
+          font-size: 1.25rem;
+        }
+
+        .text-muted {
+          font-size: 0.8rem;
+          margin-bottom: 1.25rem;
+        }
+
+        .otp-digit {
+          width: 34px;
+          height: 42px;
+          font-size: 1rem;
+          border-radius: 10px;
+        }
+
+        .otp-input-group {
+          gap: 0.25rem;
+        }
+
+        .btn {
+          padding: 0.7rem 0.9rem;
+          font-size: 0.85rem;
+        }
+
+        .review-section {
+          padding: 0.75rem 0.85rem;
+        }
+
+        .review-section p {
+          font-size: 0.8rem;
+        }
+
+        .password-requirements {
+          font-size: 0.6rem;
+          gap: 0.35rem 0.75rem;
+        }
+
+        label {
+          font-size: 0.78rem;
+        }
+
+        input,
+        select,
+        textarea {
+          padding: 0.7rem 0.85rem;
+          font-size: 0.85rem;
+          border-radius: 12px;
+        }
+      }
+
+      /* Ultra narrow — 220px to 320px */
+      @media (max-width: 320px) {
+        body.auth-page {
+          padding: 0.5rem;
+        }
+
+        .auth-card {
+          padding: 1rem 0.75rem;
+          border-radius: 18px;
+        }
+
+        .signup-progress {
+          margin: 0.85rem 0 0.75rem 0;
+        }
+
+        .signup-progress-step {
+          font-size: 0.35rem;
+          letter-spacing: 0;
+          padding: 0;
+        }
+
+        .signup-progress-step span {
+          width: 18px;
+          height: 18px;
+          font-size: 0.5rem;
+          border-width: 1.5px;
+          margin-bottom: 0.2rem;
+        }
+
+        .signup-progress::before {
+          top: 9px;
+          left: 4%;
+          right: 4%;
+          height: 1.5px;
+        }
+
+        .logo-text {
+          font-size: 0.95rem;
+        }
+
+        .logo-icon {
+          font-size: 1.2rem;
+        }
+
+        .otp-digit {
+          width: 30px;
+          height: 38px;
+          font-size: 0.9rem;
+          border-radius: 8px;
+        }
+
+        .otp-input-group {
+          gap: 0.2rem;
+        }
+
+        h2 {
+          font-size: 1.1rem;
+        }
+      }
+
+      /* Extra polish for step transition (visual only) */
+      .signup-step {
+        transition: opacity 0.15s ease;
+      }
+    </style>
   </head>
   <body class="auth-page">
     <div class="auth-container">
@@ -21,7 +740,7 @@
           </div>
         </div>
 
-        <!-- Progress indicator -->
+        <!-- Progress indicator — same on ALL screen sizes -->
         <div class="signup-progress" id="signupProgress">
           <div class="signup-progress-step" data-step="1"><span>1</span>Personal</div>
           <div class="signup-progress-step" data-step="2"><span>2</span>Account</div>
@@ -29,7 +748,8 @@
           <div class="signup-progress-step" data-step="4"><span>4</span>Review</div>
           <div class="signup-progress-step" data-step="5"><span>5</span>Verify</div>
         </div>
-        <div class="signup-progress-mobile" id="signupProgressMobile">Step 1 of 5</div>
+        <!-- Legacy mobile progress element kept hidden for JS compatibility -->
+        <div class="signup-progress-mobile" id="signupProgressMobile" style="display:none !important;">Step 1 of 5</div>
 
         <div id="registerError" class="alert alert-error" style="display:none"></div>
 
