@@ -10,6 +10,7 @@ const Accounts = {
         try {
             const response = await API.getAccounts();
             const accounts = response.accounts || [];
+            this._lastAccounts = accounts; // used by showDepositModal to know the account's currency
 
             container.innerHTML = `
                 <div class="dashboard-card mb-2">
@@ -29,7 +30,7 @@ const Accounts = {
                                 </div>
                                 <div style="text-align:right">
                                     <div class="account-balance">${Utils.formatCurrency(acc.account_balances?.available_balance || 0, acc.currency)}</div>
-                                    <button class="btn btn-sm btn-outline" onclick="Accounts.showDepositModal('${acc.id}')">Deposit</button>
+                                    <button class="btn btn-sm btn-outline" onclick="Accounts.showDepositModal('${acc.id}')">Add Money</button>
                                     <button class="btn btn-sm btn-outline" onclick="Accounts.showTransactions('${acc.id}')">History</button>
                                 </div>
                             </div>
@@ -80,36 +81,45 @@ const Accounts = {
         });
     },
 
+    // Real money in — redirects to Stripe or Flutterwave's hosted payment
+    // page. Nothing is credited here; the balance updates once the
+    // provider's webhook confirms payment (see backend/routes/webhooks.js).
     showDepositModal(accountId) {
+        const account = (this._lastAccounts || []).find(a => a.id === accountId);
+        const currency = account?.currency || 'USD';
+
         Utils.showModal(`
             <div class="modal-header">
-                <h3>Deposit Funds</h3>
+                <h3>Add Money</h3>
                 <button class="modal-close" onclick="Utils.closeModal()">&times;</button>
             </div>
             <form id="depositForm">
                 <div class="form-group">
-                    <label>Amount</label>
+                    <label>Amount (${currency})</label>
                     <input type="number" id="depositAmount" step="0.01" min="1" required>
                 </div>
                 <div class="form-group">
-                    <label>Description</label>
-                    <input type="text" id="depositDescription" placeholder="Optional">
+                    <label>Pay with</label>
+                    <select id="depositProvider">
+                        <option value="stripe">Card (Stripe)</option>
+                        <option value="flutterwave">Bank transfer / Mobile money / Card (Flutterwave)</option>
+                    </select>
                 </div>
-                <div class="alert alert-info">DEMO: Simulated deposit, no real money involved.</div>
-                <button type="submit" class="btn btn-primary btn-block">Deposit</button>
+                <p class="text-muted" style="font-size:13px">You'll be redirected to a secure payment page to complete this. Your balance updates automatically once payment is confirmed.</p>
+                <button type="submit" class="btn btn-primary btn-block">Continue to payment</button>
             </form>
         `);
 
         document.getElementById('depositForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             try {
-                await API.deposit(accountId, {
+                const response = await API.initiateFunding({
+                    account_id: accountId,
                     amount: parseFloat(document.getElementById('depositAmount').value),
-                    description: document.getElementById('depositDescription').value
+                    currency,
+                    provider: document.getElementById('depositProvider').value
                 });
-                Utils.showToast('Deposit successful!', 'success');
-                Utils.closeModal();
-                Dashboard.loadAccounts();
+                window.location.href = response.payment_link;
             } catch (error) {
                 Utils.showToast(error.message, 'error');
             }

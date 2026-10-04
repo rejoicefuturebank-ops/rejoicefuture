@@ -9,12 +9,13 @@ const Transfers = {
     async loadAccountOptions() {
         try {
             const response = await API.getAccounts();
-            const accounts = response.accounts || [];
+            this._accounts = response.accounts || [];
             const select = document.getElementById('transferFromAccount');
             if (select) {
-                select.innerHTML = accounts.map(acc =>
-                    `<option value="${acc.id}">${acc.currency} - ${Utils.formatCurrency(acc.account_balances?.available_balance || 0, acc.currency)}</option>`
+                select.innerHTML = this._accounts.map(acc =>
+                    `<option value="${acc.id}" data-currency="${acc.currency}">${acc.currency} - ${Utils.formatCurrency(acc.account_balances?.available_balance || 0, acc.currency)}</option>`
                 ).join('');
+                this.updateCurrencyDisplay();
             }
         } catch (error) {
             console.error('Error loading accounts:', error);
@@ -26,7 +27,7 @@ const Transfers = {
         if (transferType) {
             transferType.addEventListener('change', (e) => {
                 const value = e.target.value;
-                document.getElementById('beneficiarySelect').style.display = value === 'beneficiary' ? 'block' : 'none';
+                document.getElementById('internalTransferFields').style.display = value === 'internal' ? 'block' : 'none';
                 document.getElementById('externalTransferFields').style.display = value === 'external' ? 'block' : 'none';
             });
         }
@@ -36,17 +37,32 @@ const Transfers = {
             form.addEventListener('submit', (e) => this.handleTransfer(e));
         }
 
-        document.getElementById('addBeneficiaryBtn')?.addEventListener('click', () => this.showAddBeneficiaryModal());
+        const fromAccountSelect = document.getElementById('transferFromAccount');
+        if (fromAccountSelect) {
+            fromAccountSelect.addEventListener('change', () => this.updateCurrencyDisplay());
+        }
 
+        document.getElementById('addBeneficiaryBtn')?.addEventListener('click', () => this.showAddBeneficiaryModal());
         document.getElementById('transferAmount')?.addEventListener('input', () => this.updateSummary());
+    },
+
+    updateCurrencyDisplay() {
+        const select = document.getElementById('transferFromAccount');
+        const display = document.getElementById('transferCurrencyDisplay');
+        if (!select || !display) return;
+        const currency = select.options[select.selectedIndex]?.dataset.currency;
+        display.textContent = currency || 'Select a source account';
     },
 
     updateSummary() {
         const amount = parseFloat(document.getElementById('transferAmount')?.value || 0);
+        const transferType = document.getElementById('transferType')?.value;
         const summary = document.getElementById('transferSummary');
         if (summary && amount > 0) {
             summary.style.display = 'block';
-            const fee = amount * 0.01; // 1% fee simulation
+            // Internal (app-to-app) transfers are free. External payouts
+            // carry the same fee the backend calculates: max($5, 1%).
+            const fee = transferType === 'external' ? Math.max(5, amount * 0.01) : 0;
             document.getElementById('summaryAmount').textContent = Utils.formatCurrency(amount);
             document.getElementById('summaryFee').textContent = Utils.formatCurrency(fee);
             document.getElementById('summaryTotal').textContent = Utils.formatCurrency(amount + fee);
@@ -59,37 +75,39 @@ const Transfers = {
         e.preventDefault();
 
         const transferType = document.getElementById('transferType').value;
-        const data = {
-            from_account_id: document.getElementById('transferFromAccount').value,
+        const fromAccountId = document.getElementById('transferFromAccount').value;
+        const fromSelect = document.getElementById('transferFromAccount');
+        const currency = fromSelect.options[fromSelect.selectedIndex]?.dataset.currency;
+
+        const baseData = {
+            from_account_id: fromAccountId,
             amount: parseFloat(document.getElementById('transferAmount').value),
-            currency: document.getElementById('transferCurrency').value,
+            currency,
             description: document.getElementById('transferDescription').value
         };
 
-        if (transferType === 'beneficiary') {
-            data.beneficiary_id = document.getElementById('transferBeneficiary').value;
-        } else if (transferType === 'external') {
-            data.recipient_name = document.getElementById('recipientName').value;
-            data.recipient_account_number = document.getElementById('recipientAccount').value;
-            data.recipient_bank = document.getElementById('recipientBank').value;
-            data.recipient_country = document.getElementById('recipientCountry').value;
-        }
+        const recipientIdentifier = document.getElementById('internalRecipient')?.value;
+        const beneficiaryId = document.getElementById('transferBeneficiary')?.value;
 
         try {
-            const response = await API.createTransfer(data);
-
-            if (response.otp_required) {
-                this.showOTPModal(response.challenge_id, response.otp_code, data);
-                return;
+            let response;
+            if (transferType === 'internal') {
+                response = await API.sendInternalTransfer({ ...baseData, recipient_identifier: recipientIdentifier });
+            } else {
+                response = await API.sendExternalTransfer({ ...baseData, beneficiary_id: beneficiaryId });
             }
 
-            Utils.showToast('Transfer completed successfully!', 'success');
+            Utils.showToast(response.message || 'Transfer completed successfully!', 'success');
             this.showReceipt(response.receipt);
-            form.reset();
+            document.getElementById('transferForm').reset();
             await this.loadHistory();
             Dashboard.loadAccounts();
         } catch (error) {
-            if (error.message.includes('limit') || error.message.includes('Limit')) {
+            if (error.otp_required || (error.message && error.message.toLowerCase().includes('verification code'))) {
+                this.showOTPModal(transferType, baseData, recipientIdentifier, beneficiaryId, error.challenge_id);
+                return;
+            }
+            if (error.message && error.message.toLowerCase().includes('limit')) {
                 this.showLimitExceededModal(error);
             } else {
                 Utils.showToast(error.message, 'error');
@@ -97,19 +115,20 @@ const Transfers = {
         }
     },
 
-    showOTPModal(challengeId, otpCode, transferData) {
+    // The backend returns 402 with a challenge_id when a code is needed
+    // and emails the actual code — we never see or display it ourselves.
+    showOTPModal(transferType, baseData, recipientIdentifier, beneficiaryId, challengeId) {
         Utils.showModal(`
             <div class="modal-header">
-                <h3>🔐 OTP Verification Required</h3>
+                <h3>🔐 Verification Required</h3>
                 <button class="modal-close" onclick="Utils.closeModal()">&times;</button>
             </div>
             <div class="alert alert-info">
-                DEMO MODE: Your OTP code is <strong style="font-size:20px">${otpCode}</strong>
-                <br><small>In production, this would be sent via SMS/Email</small>
+                We've emailed a 6-digit verification code to your registered email address. It expires in 10 minutes.
             </div>
             <form id="otpForm">
                 <div class="form-group">
-                    <label>Enter OTP Code</label>
+                    <label>Enter verification code</label>
                     <input type="text" id="otpInput" maxlength="6" pattern="[0-9]{6}" required
                            style="text-align:center;font-size:24px;letter-spacing:8px">
                 </div>
@@ -119,12 +138,14 @@ const Transfers = {
 
         document.getElementById('otpForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const otp = document.getElementById('otpInput').value;
+            const otp_code = document.getElementById('otpInput').value;
+            const payload = { ...baseData, otp_code, challenge_id: challengeId };
 
             try {
-                transferData.otp_code = otp;
-                transferData.challenge_id = challengeId;
-                const response = await API.createTransfer(transferData);
+                const response = transferType === 'internal'
+                    ? await API.sendInternalTransfer({ ...payload, recipient_identifier: recipientIdentifier })
+                    : await API.sendExternalTransfer({ ...payload, beneficiary_id: beneficiaryId });
+
                 Utils.showToast('Transfer completed!', 'success');
                 Utils.closeModal();
                 this.showReceipt(response.receipt);
@@ -191,6 +212,7 @@ const Transfers = {
     },
 
     showReceipt(receipt) {
+        if (!receipt) return;
         Utils.showModal(`
             <div class="receipt">
                 <div class="receipt-header">
@@ -204,6 +226,7 @@ const Transfers = {
                     <div class="receipt-row"><span class="label">Fee:</span><span class="value">${Utils.formatCurrency(receipt.fee, receipt.currency)}</span></div>
                     <div class="receipt-row"><span class="label">Total:</span><span class="value">${Utils.formatCurrency(receipt.total, receipt.currency)}</span></div>
                     <div class="receipt-row"><span class="label">Date:</span><span class="value">${Utils.formatDateTime(receipt.date)}</span></div>
+                    ${receipt.status ? `<div class="receipt-row"><span class="label">Status:</span><span class="value">${receipt.status}</span></div>` : ''}
                 </div>
             </div>
             <button class="btn btn-primary btn-block mt-2" onclick="Utils.closeModal()">Done</button>
@@ -217,7 +240,7 @@ const Transfers = {
             const select = document.getElementById('transferBeneficiary');
             if (select) {
                 select.innerHTML = '<option value="">Select Beneficiary</option>' +
-                    beneficiaries.map(b => `<option value="${b.id}">${b.name} - ${b.bank_name}</option>`).join('');
+                    beneficiaries.map(b => `<option value="${b.id}">${b.name} - ${b.bank_name}${b.bank_code ? '' : ' (missing bank code — edit before sending)'}</option>`).join('');
             }
         } catch (error) {
             console.error('Error loading beneficiaries:', error);
@@ -232,28 +255,54 @@ const Transfers = {
             </div>
             <form id="beneficiaryForm">
                 <div class="form-group"><label>Full Name</label><input type="text" id="benName" required></div>
-                <div class="form-group"><label>Account Number</label><input type="text" id="benAccount" required></div>
-                <div class="form-group"><label>Bank Name</label><input type="text" id="benBank" required></div>
-                <div class="form-group"><label>Country</label>
-                    <select id="benCountry">
-                        <option value="US">United States</option>
-                        <option value="GB">United Kingdom</option>
-                        <option value="DE">Germany</option>
+                <div class="form-group">
+                    <label>Country</label>
+                    <select id="benCountry" required>
                         <option value="NG">Nigeria</option>
-                        <option value="AE">UAE</option>
+                        <option value="GH">Ghana</option>
+                        <option value="KE">Kenya</option>
+                        <option value="ZA">South Africa</option>
+                        <option value="UG">Uganda</option>
+                        <option value="TZ">Tanzania</option>
                     </select>
+                    <small class="text-muted">External payouts are currently only supported to these countries.</small>
                 </div>
+                <div class="form-group">
+                    <label>Bank</label>
+                    <select id="benBankCode" required><option value="">Loading banks...</option></select>
+                </div>
+                <div class="form-group"><label>Account Number</label><input type="text" id="benAccount" required></div>
                 <button type="submit" class="btn btn-primary btn-block">Add Beneficiary</button>
             </form>
         `);
 
+        const loadBanks = async () => {
+            const country = document.getElementById('benCountry').value;
+            const bankSelect = document.getElementById('benBankCode');
+            bankSelect.innerHTML = '<option value="">Loading banks...</option>';
+            try {
+                const response = await API.getBanks(country);
+                const banks = response.banks || [];
+                bankSelect.innerHTML = '<option value="">Select bank</option>' +
+                    banks.map(b => `<option value="${b.code}" data-name="${b.name}">${b.name}</option>`).join('');
+            } catch (error) {
+                bankSelect.innerHTML = '<option value="">Could not load banks — try again</option>';
+            }
+        };
+        document.getElementById('benCountry').addEventListener('change', loadBanks);
+        loadBanks();
+
         document.getElementById('beneficiaryForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             try {
+                const bankSelect = document.getElementById('benBankCode');
+                const bankName = bankSelect.options[bankSelect.selectedIndex]?.dataset.name || '';
+
                 await API.addBeneficiary({
                     name: document.getElementById('benName').value,
                     account_number: document.getElementById('benAccount').value,
-                    bank_name: document.getElementById('benBank').value,
+                    bank_name: bankName,
+                    bank_code: bankSelect.value,
                     country: document.getElementById('benCountry').value
                 });
                 Utils.showToast('Beneficiary added!', 'success');
@@ -278,9 +327,9 @@ const Transfers = {
                     <tr>
                         <td>${Utils.formatDate(tx.created_at)}</td>
                         <td><code>${tx.reference}</code></td>
-                        <td>${tx.metadata?.recipient_name || tx.description || 'Transfer'}</td>
+                        <td>${tx.metadata?.recipient_name || tx.metadata?.recipient_identifier || tx.description || 'Transfer'}</td>
                         <td>${Utils.formatCurrency(tx.amount, tx.currency)}</td>
-                        <td><span class="badge badge-${tx.status === 'completed' ? 'success' : tx.status === 'pending' ? 'warning' : 'danger'}">${tx.status}</span></td>
+                        <td><span class="badge badge-${tx.status === 'completed' ? 'success' : tx.status === 'processing' || tx.status === 'pending' ? 'warning' : 'danger'}">${tx.status}</span></td>
                     </tr>
                 `).join('');
         } catch (error) {

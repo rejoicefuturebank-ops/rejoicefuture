@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/dashboard.css" />
     <link rel="stylesheet" href="css/banking.css" />
+    <link rel="stylesheet" href="css/dashboard-patch.css" />
   </head>
   <body>
     <div class="app-layout">
@@ -236,14 +237,19 @@
                 <div class="form-group">
                   <label>Transfer Type</label>
                   <select id="transferType">
-                    <option value="internal">Between My Accounts</option>
-                    <option value="beneficiary">To Beneficiary</option>
-                    <option value="external">External Transfer</option>
+                    <option value="internal">To a RejoiceFutureBank User</option>
+                    <option value="external">External Transfer (Beneficiary)</option>
                   </select>
                 </div>
 
+                <div id="internalTransferFields" class="form-group">
+                  <label>Recipient account number or email</label>
+                  <input type="text" id="internalRecipient" placeholder="ACC1234567890 or name@email.com" />
+                  <small class="text-muted">Must be a RejoiceFutureBank account in the same currency as your source account.</small>
+                </div>
+
                 <div
-                  id="beneficiarySelect"
+                  id="externalTransferFields"
                   class="form-group"
                   style="display: none"
                 >
@@ -258,32 +264,7 @@
                   >
                     + Add New
                   </button>
-                </div>
-
-                <div id="externalTransferFields" style="display: none">
-                  <div class="form-group">
-                    <label>Recipient Name</label>
-                    <input type="text" id="recipientName" />
-                  </div>
-                  <div class="form-group">
-                    <label>Account Number</label>
-                    <input type="text" id="recipientAccount" />
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label>Bank</label>
-                      <input type="text" id="recipientBank" />
-                    </div>
-                    <div class="form-group">
-                      <label>Country</label>
-                      <select id="recipientCountry">
-                        <option value="US">United States</option>
-                        <option value="GB">United Kingdom</option>
-                        <option value="DE">Germany</option>
-                        <option value="FR">France</option>
-                      </select>
-                    </div>
-                  </div>
+                  <small class="text-muted">Supported destinations: Nigeria, Ghana, Kenya, South Africa, Uganda, Tanzania.</small>
                 </div>
 
                 <div class="form-row">
@@ -299,11 +280,7 @@
                   </div>
                   <div class="form-group">
                     <label>Currency</label>
-                    <select id="transferCurrency">
-                      <option value="USD">USD</option>
-                      <option value="EUR">EUR</option>
-                      <option value="GBP">GBP</option>
-                    </select>
+                    <div id="transferCurrencyDisplay" class="form-static-value">Select a source account</div>
                   </div>
                 </div>
 

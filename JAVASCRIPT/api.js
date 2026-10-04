@@ -46,7 +46,14 @@ const API = {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error || `HTTP ${response.status}`);
+                // Attach the full response body onto the Error so callers
+                // that need extra fields (otp_required, challenge_id,
+                // attemptsRemaining, etc.) beyond the message can read them
+                // instead of re-parsing a generic error string.
+                const err = new Error(data.error || data.message || `HTTP ${response.status}`);
+                Object.assign(err, data);
+                err.status = response.status;
+                throw err;
             }
 
             return data;

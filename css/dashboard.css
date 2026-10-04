@@ -2618,3 +2618,13 @@ html, body,
         width: 100%;
     }
 }
+
+/* Additive only — for the transfer form's read-only currency display */
+.form-static-value {
+    padding: 10px 12px;
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 6px;
+    background: var(--bg-secondary, #f8fafc);
+    color: var(--text-muted, #64748b);
+    font-size: 14px;
+}

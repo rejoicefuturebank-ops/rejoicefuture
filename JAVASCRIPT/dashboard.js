@@ -52,6 +52,10 @@ const Dashboard = {
       // Check for impersonation mode
       this.checkImpersonation();
 
+      // If we just got redirected back from a Stripe/Flutterwave payment
+      // page, check how it went.
+      this.checkFundingRedirect();
+
       console.log("✅ Dashboard loaded successfully");
     } catch (error) {
       console.error("❌ Dashboard initialization error:", error);
@@ -185,6 +189,14 @@ const Dashboard = {
       // Store freeze info globally
       this.freezeInfo = freezeInfo;
 
+      // Registration must be fully complete (real email verification,
+      // not the old auto-verified demo flag) before the dashboard is
+      // usable. The backend is authoritative here, not any local flag.
+      if (response.registration_status && response.registration_status !== "active") {
+        window.location.href = `/register.html?stage=${response.signup_stage || 2}`;
+        return;
+      }
+
       if (user.is_frozen) {
         this.showFrozenBanner(freezeInfo);
         this.disableFinancialActions();
@@ -195,6 +207,48 @@ const Dashboard = {
     } catch (error) {
       console.error("Status check error:", error);
     }
+  },
+
+  // After a Stripe/Flutterwave redirect back to the dashboard, poll the
+  // funding status once and let the person know what happened. The
+  // webhook (server-side) is what actually credits the balance — this
+  // is purely to give immediate feedback in the UI.
+  async checkFundingRedirect() {
+    const params = new URLSearchParams(window.location.search);
+    const reference = params.get("funding_ref");
+    if (!reference) return;
+
+    // Clean the URL so a refresh doesn't re-trigger this.
+    const cleanUrl = window.location.pathname;
+    window.history.replaceState({}, document.title, cleanUrl);
+
+    const pollOnce = async (attemptsLeft) => {
+      try {
+        const { transaction } = await API.getFundingStatus(reference);
+        if (transaction.status === "completed") {
+          Utils.showToast(
+            `Deposit of ${Utils.formatCurrency(transaction.amount, transaction.currency)} confirmed!`,
+            "success"
+          );
+          await this.loadAccounts();
+          return;
+        }
+        if (transaction.status === "failed") {
+          Utils.showToast("This deposit did not complete.", "error");
+          return;
+        }
+        // still pending — webhooks can take a few seconds
+        if (attemptsLeft > 0) {
+          setTimeout(() => pollOnce(attemptsLeft - 1), 2000);
+        } else {
+          Utils.showToast("Your deposit is still processing. It will appear once confirmed.", "info");
+        }
+      } catch (error) {
+        console.error("Funding status check error:", error);
+      }
+    };
+
+    pollOnce(5);
   },
 
   showFrozenBanner(freezeInfo) {
